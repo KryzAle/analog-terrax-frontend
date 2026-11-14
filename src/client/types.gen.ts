@@ -41,10 +41,10 @@ export type EarthdataGranuleSummary = {
 };
 
 export type Earth2dDemProvenance = {
-  source: string;
-  window_km: number;
-  grid_shape: number[];
-  gsd_m: number;
+  source_tile_url: string;
+  window_size_km: number;
+  resampled_grid_shape: number[];
+  resampled_gsd_m: number;
   mean_elevation_m: number;
   min_elevation_m: number;
   max_elevation_m: number;
@@ -59,18 +59,15 @@ export type Earth2dDemProvenance = {
 export type MacrostratMappedUnit = {
   map_id?: number | null;
   source_id?: number | null;
-  name?: string;
-  strat_name?: string;
-  lith?: string;
-  descrip?: string;
-  age?: string;
-  t_int_name?: string;
-  b_int_name?: string;
+  unit_name: string;
+  age: string;
+  lithology: string;
+  description?: string;
 };
 
 export type MacrostratGeologyProvenance = {
-  source: string;
-  mapped_units_count: number;
+  api_endpoint: string;
+  units_count: number;
   mapped_units: MacrostratMappedUnit[];
 };
 
@@ -79,33 +76,39 @@ export type EmitMineralRecord = {
   mineral_name: string;
   pixel_count: number;
   mean_band_depth: number;
-  max_band_depth: number;
 };
 
 export type EmitStreamedMineralogy = {
   granule_id: string;
-  grid_shape?: number[];
-  valid_g1_pixels?: number;
-  valid_g2_pixels?: number;
-  top_group_1_minerals?: EmitMineralRecord[];
-  top_group_2_minerals?: EmitMineralRecord[];
+  concept_id: string;
+  https_url: string;
+  window_shape: number[];
+  group_1_mean_band_depth: number;
+  group_2_mean_band_depth: number;
+  top_group_1_minerals: EmitMineralRecord[];
+  top_group_2_minerals: EmitMineralRecord[];
 };
 
-export type EarthdataSatelliteGranuleRef = {
-  found: boolean;
-  short_name?: string | null;
-  granule_id?: string | null;
-  concept_id?: string | null;
-  time_start?: string | null;
-  size_mb?: number | null;
-  https_url?: string | null;
-  streamed_mineralogy?: EmitStreamedMineralogy | null;
+export type CmrGranuleRef = {
+  short_name: string;
+  concept_id: string;
+  granule_id: string;
+  time_start: string;
+  https_url: string;
+};
+
+export type EarthdataSatellitesBundle = {
+  dem_granule?: CmrGranuleRef | null;
+  modis_ndvi_granule?: CmrGranuleRef | null;
+  modis_cryosphere_granule?: CmrGranuleRef | null;
+  emit_mineralogy_granule?: CmrGranuleRef | null;
+  emit_streamed_mineralogy?: EmitStreamedMineralogy | null;
 };
 
 export type EarthMultiSourceProvenance = {
   topography_2d_dem: Earth2dDemProvenance;
   geology_macrostrat: MacrostratGeologyProvenance;
-  earthdata_satellites: Record<string, EarthdataSatelliteGranuleRef>;
+  earthdata_satellites: EarthdataSatellitesBundle;
 };
 
 export type PlanetarySite = {

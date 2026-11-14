@@ -7,36 +7,41 @@ import type {
 
 export const toEarthdataTelemetry = (dto: EarthdataAtl03Record): EarthdataTelemetry => {
   const prov = dto.earth_provenance;
-  const emitSat = prov?.earthdata_satellites?.emit_l2b_mineralogy;
-  const emitStreamed = emitSat?.streamed_mineralogy;
+  const emitStreamed = prov?.earthdata_satellites?.emit_streamed_mineralogy;
 
-  const emitMineralogy: EmitProvenanceInfo | null =
-    emitSat?.found && emitStreamed
-      ? {
-          granuleId: emitStreamed.granule_id || emitSat.granule_id || "",
-          httpsUrl: emitSat.https_url ?? null,
-          topGroup1Minerals: (emitStreamed.top_group_1_minerals ?? []).slice(0, 3).map((m) => ({
-            mineralName: m.mineral_name,
-            pixelCount: m.pixel_count,
-            meanBandDepth: m.mean_band_depth,
-          })),
-          topGroup2Minerals: (emitStreamed.top_group_2_minerals ?? []).slice(0, 3).map((m) => ({
-            mineralName: m.mineral_name,
-            pixelCount: m.pixel_count,
-            meanBandDepth: m.mean_band_depth,
-          })),
-        }
-      : null;
+  const emitMineralogy: EmitProvenanceInfo | null = emitStreamed
+    ? {
+        granuleId: emitStreamed.granule_id,
+        httpsUrl: emitStreamed.https_url || null,
+        topGroup1Minerals: (emitStreamed.top_group_1_minerals ?? []).slice(0, 3).map((m) => ({
+          mineralName: m.mineral_name,
+          pixelCount: m.pixel_count,
+          meanBandDepth: m.mean_band_depth,
+        })),
+        topGroup2Minerals: (emitStreamed.top_group_2_minerals ?? []).slice(0, 3).map((m) => ({
+          mineralName: m.mineral_name,
+          pixelCount: m.pixel_count,
+          meanBandDepth: m.mean_band_depth,
+        })),
+      }
+    : null;
 
   const satelliteGranules: SatelliteGranuleBadge[] = [];
-  if (prov?.earthdata_satellites) {
-    for (const [key, sat] of Object.entries(prov.earthdata_satellites)) {
-      if (sat.found && sat.granule_id && sat.short_name) {
+  const sats = prov?.earthdata_satellites;
+  if (sats) {
+    const entries = [
+      ["dem_granule", sats.dem_granule],
+      ["emit_mineralogy_granule", sats.emit_mineralogy_granule],
+      ["modis_ndvi_granule", sats.modis_ndvi_granule],
+      ["modis_cryosphere_granule", sats.modis_cryosphere_granule],
+    ] as const;
+    for (const [key, sat] of entries) {
+      if (sat && sat.granule_id && sat.short_name) {
         satelliteGranules.push({
           key,
           shortName: sat.short_name,
           granuleId: sat.granule_id,
-          httpsUrl: sat.https_url ?? null,
+          httpsUrl: sat.https_url || null,
         });
       }
     }
@@ -83,9 +88,9 @@ export const toEarthdataTelemetry = (dto: EarthdataAtl03Record): EarthdataTeleme
     })),
     dem2d: prov?.topography_2d_dem
       ? {
-          source: prov.topography_2d_dem.source,
-          windowKm: prov.topography_2d_dem.window_km,
-          gsdM: prov.topography_2d_dem.gsd_m,
+          source: prov.topography_2d_dem.source_tile_url,
+          windowKm: prov.topography_2d_dem.window_size_km,
+          gsdM: prov.topography_2d_dem.resampled_gsd_m,
           meanElevationM: prov.topography_2d_dem.mean_elevation_m,
           reliefM: prov.topography_2d_dem.relief_m,
           slopeMeanDeg: prov.topography_2d_dem.slope_mean_deg,
@@ -94,10 +99,10 @@ export const toEarthdataTelemetry = (dto: EarthdataAtl03Record): EarthdataTeleme
         }
       : null,
     macrostratUnits: (prov?.geology_macrostrat?.mapped_units ?? []).slice(0, 3).map((u) => ({
-      name: u.name || u.strat_name || "Mapped unit",
-      stratName: u.strat_name || "",
-      lith: u.lith || u.descrip || "",
-      age: u.age || u.t_int_name || "",
+      name: u.unit_name || "Mapped unit",
+      stratName: u.unit_name || "",
+      lith: u.lithology || u.description || "",
+      age: u.age || "",
     })),
     emitMineralogy,
     satelliteGranules,
