@@ -106,7 +106,7 @@ The live responses match the generated `@/client` types.
 - **F1 Confidence:** not returned. The confidence badge stays hidden.
 - **F2 Images:** not returned. The image comparison shows placeholders.
 - **F3 Sources:** no source links per match; only the instrument name on laser profiles (e.g. "LRO LOLA"). A static source list per body (LOLA, Diviner, MOLA, CRISM, NASADEM, ASTER GED, EMIT, ICESat-2) is shown.
-- **F4 Activities:** not in the API. Activities and their default weights stay in `src/shared/config/activities.ts`; weights are sent with each search.
+- **F4 Activities:** not in the API. Activities and their default weights stay in `src/features/analog-finder/data/activities.ts`; weights are sent with each search.
 - **F5 Sites differ from the brief:**
   - Moon (6): Shackleton Crater Rim, de Gerlache Rim 2, Marius Hills Skylight, Aristarchus Plateau, Mare Tranquillitatis Pit, Schrödinger Basin. Malapert Massif, Haworth, Mons Mouton and Nobile Rim are missing.
   - Mars (6): Jezero, Arcadia Planitia, Elysium Planitia, Mawrth Vallis, Arsia Mons pits, Melas Chasma. Amazonis Planitia and Gale crater are missing.

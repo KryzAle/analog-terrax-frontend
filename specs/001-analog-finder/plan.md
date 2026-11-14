@@ -42,7 +42,7 @@
 | Domain | `domain/repositories/*.ts` | `SiteRepository`, `AnalogSearchRepository`, `ProfileRepository` interfaces |
 | Data | `data/repositories/api-*.repository.ts` | Wrap `@/client` SDK functions |
 | Data | `data/mappers/*.mapper.ts` | `PlanetarySite` / `AnalogMatchResult` → domain entities |
-| Config | `src/shared/config/activities.ts` | Activities with default weights, icons and test ideas |
+| Config | `src/features/analog-finder/data/activities.ts` | Activities with default weights, icons and test ideas |
 | DI | `di.ts` | Exports repository instances |
 | View models | `presentation/view-models/use-selection-view-model.ts` | World, target, activity, weights; reset weights on activity change |
 | View models | `use-targets-view-model.ts`, `use-analog-results-view-model.ts`, `use-analog-detail-view-model.ts` | Queries, derived display data, actions |
@@ -54,7 +54,7 @@ The team's `analog-explorer` hooks become the data-layer repositories and view m
 
 ## Decisions and risks
 
-- **Map is client-only:** loaded with `dynamic(() => import(...), { ssr: false })`.
+- **Map is client-only:** loaded with `dynamic(() => import(...), { ssr: false })`. Basemap: CARTO Dark Matter. MapLibre's worker is loaded from unpkg at the installed version, because Turbopack rewrites its self-relative worker URL; self-host it if the map must work offline.
 - **Backend availability:** the backend is a Vercel function; cold starts can exceed 1 s. Warm it before the demo (open the health badge).
 - **CORS:** the browser calls the API directly. Allowed origins: `http://localhost:3000`, `https://analog-terrax-frontend.vercel.app`. Vercel preview URLs need adding in the backend if previews are used.
 - **API gaps** (confidence, images, sources, activities): see spec "Backend findings" F1–F4. The UI renders placeholders until the backend adds them; no fake values in the frontend.

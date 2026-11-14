@@ -106,7 +106,7 @@ Current feature: [specs/001-analog-finder/](specs/001-analog-finder/spec.md).
 
 ## Repo state
 
-Next.js 15 (App Router, React 19, TS strict, Tailwind v4) on Vercel, backed by the FastAPI repo `analog-terrax-backend` (expected as a sibling directory, deployed at `https://analog-terrax-backend.vercel.app`). The team's first dashboard lives in `src/features/analog-explorer/` (components + hooks calling `@/client`) and `src/features/system-status/`; it predates the MVVM layering and is migrated per spec 001. Dark tokens are in `src/app/globals.css`, strings in `src/shared/i18n`, config in `src/shared/config`.
+Next.js 15 (App Router, React 19, TS strict, Tailwind v4) on Vercel, backed by the FastAPI repo `analog-terrax-backend` (expected as a sibling directory, deployed at `https://analog-terrax-backend.vercel.app`). The dashboard is `src/features/analog-finder/` (MVVM, rendered by `src/app/page.tsx`); `src/features/system-status/` is the backend health badge. Dark tokens are in `src/app/globals.css`, strings in `src/shared/i18n`, config in `src/shared/config`.
 
 ## Commands
 
@@ -117,7 +117,8 @@ make api         # regenerate src/client from the backend at localhost:8000 (npm
 make build       # production build
 make start       # build and serve locally
 make typecheck   # tsc --noEmit
-make check       # typecheck + build + react-doctor
+make domain      # run assert-based *.check.ts files (tsx)
+make check       # typecheck + domain + build + react-doctor
 make up | down | logs | shell | rebuild   # Docker dev container (Dockerfile.dev, compose.dev.yaml), development only
 ```
 
@@ -133,7 +134,7 @@ Clean architecture + MVVM, one vertical slice per feature. Full rules, naming an
 - `src/features/<feature>/data/`: repositories that wrap the generated `@/client` SDK, and mappers from API DTOs to domain entities.
 - `src/features/<feature>/presentation/`: `use-*-view-model.ts` (state, actions, derived data) and stateless `*.view.tsx`, connected by a `*.screen.tsx`.
 - `src/features/<feature>/di.ts`: composition root. Dependency rule: views → view models → domain ← data.
-- `src/shared/{ui,i18n,lib,config}`: design-system components, string catalog, `cn()` (currently `src/lib/utils.ts`), app config.
+- `src/shared/{ui,i18n,lib,config}`: design-system components, string catalog, `cn()` in `src/shared/lib/cn.ts`, app config. `src/lib/api-client.ts` is the `apiFetch` used by the generated client.
 - `src/app/`: thin routing only. `src/providers/`: React Query `QueryClient` (created via `useState` for SSR safety).
 - Arrow function components, functional style (no loops), TS strict without `any`, no comments unless essential, all UI strings via i18n.
 - Path alias `@/*` → `src/*`. Env vars validated with Zod in `src/env.ts`.
