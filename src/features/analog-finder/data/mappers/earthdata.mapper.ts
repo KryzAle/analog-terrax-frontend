@@ -1,0 +1,43 @@
+import type { EarthdataAtl03Record } from "@/client";
+import type { EarthdataTelemetry } from "../../domain/entities";
+
+export const toEarthdataTelemetry = (dto: EarthdataAtl03Record): EarthdataTelemetry => ({
+  siteId: dto.site_id,
+  cellId: dto.cell_id,
+  siteName: dto.site_name,
+  dataset: dto.dataset,
+  granuleId: dto.granule.granule_id,
+  conceptId: dto.granule.concept_id,
+  version: dto.granule.version,
+  timeStart: dto.granule.time_start,
+  timeEnd: dto.granule.time_end,
+  sizeMb: dto.granule.size_mb,
+  httpsUrl: dto.granule.https_url,
+  orbitNumber: dto.orbit_info.orbit_number[0] ?? null,
+  rgt: dto.orbit_info.rgt[0] ?? null,
+  cycleNumber: dto.orbit_info.cycle_number[0] ?? null,
+  beamId: dto.sampled_beam.beam_id,
+  windowSegmentsEvaluated: dto.sampled_beam.window_segments_evaluated,
+  totalSegmentsInBeam: dto.sampled_beam.total_segments_in_beam,
+  alongTrackReliefM: dto.computed_topography.relief_m,
+  alongTrackSlopeMeanDeg: dto.computed_topography.slope_mean_deg,
+  alongTrackRoughnessRmsM: dto.computed_topography.roughness_rms_m,
+  alongTrackMeanElevationM: dto.computed_topography.mean_elevation_m,
+  segments: dto.geolocation_segments.map((seg) => ({
+    segmentOffset: seg.segment_offset,
+    lat: seg.reference_lat,
+    lon: seg.reference_lon,
+    demHeightM: seg.dem_height_m ?? null,
+    solarElevationDeg: seg.solar_elevation_deg ?? null,
+    photonCount: seg.photon_count_in_segment,
+  })),
+  photons: dto.photons.map((ph) => ({
+    photonIndex: ph.photon_index,
+    lat: ph.lat,
+    lon: ph.lon,
+    heightWgs84M: ph.height_wgs84_m,
+    landSignalConfidence: ph.land_signal_confidence,
+    qualityFlag: ph.quality_flag,
+    deltaTimeS: ph.delta_time_s,
+  })),
+});

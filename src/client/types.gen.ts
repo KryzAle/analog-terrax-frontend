@@ -26,6 +26,20 @@ export type EnvironmentalFlags = {
   is_volcanic?: boolean;
 };
 
+export type EarthdataGranuleSummary = {
+  dataset?: string;
+  granule_id: string;
+  concept_id: string;
+  time_start: string;
+  size_mb: number;
+  https_url: string;
+  beam_id: string;
+  photon_sample_count: number;
+  segment_count: number;
+  along_track_relief_m: number;
+  along_track_mean_elevation_m: number;
+};
+
 export type PlanetarySite = {
   site_id: string;
   cell_id: string;
@@ -43,6 +57,74 @@ export type PlanetarySite = {
   geology_fractions: Record<string, number>;
   mineralogy: Record<string, number | null>;
   flags: EnvironmentalFlags;
+  earthdata_granule?: EarthdataGranuleSummary | null;
+};
+
+export type Atl03GranuleMetadata = {
+  granule_id: string;
+  concept_id: string;
+  version: string;
+  time_start: string;
+  time_end: string;
+  size_mb: number;
+  https_url: string;
+};
+
+export type Atl03OrbitInfo = {
+  orbit_number: number[];
+  rgt: number[];
+  cycle_number: number[];
+  sc_orient: number[];
+};
+
+export type Atl03SampledBeam = {
+  beam_id: string;
+  matched_query_bbox: boolean;
+  window_segments_evaluated: number;
+  total_segments_in_beam: number;
+};
+
+export type Atl03ComputedTopography = {
+  relief_m: number;
+  slope_mean_deg: number;
+  slope_p90_deg: number;
+  ruggedness_tri_m: number;
+  roughness_rms_m: number;
+  hypsometric_integral: number;
+  mean_elevation_m: number;
+};
+
+export type Atl03GeolocationSegment = {
+  segment_offset: number;
+  reference_lat: number;
+  reference_lon: number;
+  dem_height_m?: number | null;
+  solar_elevation_deg?: number | null;
+  photon_count_in_segment: number;
+};
+
+export type Atl03PhotonSample = {
+  photon_index: number;
+  lat: number;
+  lon: number;
+  height_wgs84_m: number;
+  land_signal_confidence: number;
+  quality_flag: number;
+  delta_time_s: number;
+};
+
+export type EarthdataAtl03Record = {
+  site_id: string;
+  cell_id: string;
+  site_name: string;
+  query_bbox: number[];
+  dataset: string;
+  granule: Atl03GranuleMetadata;
+  orbit_info: Atl03OrbitInfo;
+  sampled_beam: Atl03SampledBeam;
+  computed_topography: Atl03ComputedTopography;
+  geolocation_segments: Atl03GeolocationSegment[];
+  photons: Atl03PhotonSample[];
 };
 
 export type LithologyClassSpec = {
@@ -168,6 +250,11 @@ export type SingleLaserProfile = {
   body: CelestialBody;
   instrument: string;
   granule_id: string;
+  concept_id?: string | null;
+  beam?: string | null;
+  time_start?: string | null;
+  https_url?: string | null;
+  photon_sample_count?: number | null;
   points: LaserProfilePoint[];
   stats: LaserProfileStats;
 };

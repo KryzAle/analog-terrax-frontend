@@ -13,6 +13,7 @@ import { ScorePill } from "@/shared/ui/score-pill";
 import { SourceList } from "@/shared/ui/source-list";
 import { ASPECTS } from "../../domain/entities";
 import type { AnalogDetailViewModel } from "../view-models/use-analog-detail-view-model";
+import { EarthdataTelemetryView } from "./earthdata-telemetry.view";
 import { HighlightListView } from "./highlight-list.view";
 import { LaserProfileView } from "./laser-profile.view";
 
@@ -41,6 +42,8 @@ export const AnalogDetailDrawerView = ({
   profile,
   isProfileLoading,
   isProfileError,
+  earthdata,
+  isEarthdataLoading,
   onClose,
 }: AnalogDetailDrawerViewProps) => {
   const closeRef = useRef<HTMLButtonElement>(null);
@@ -143,6 +146,16 @@ export const AnalogDetailDrawerView = ({
             </p>
           )}
         </Section>
+
+        {(earthdata || isEarthdataLoading) && (
+          <Section title={`${t.detail.earthdataTitle} · ${t.detail.earthdataHint}`}>
+            {earthdata ? (
+              <EarthdataTelemetryView telemetry={earthdata} />
+            ) : (
+              <p className="text-xs text-text-muted">{t.detail.earthdataLoading}</p>
+            )}
+          </Section>
+        )}
 
         <SourceList title={t.detail.sourcesTitle} sources={sources} />
         <EarthLimitsNote />

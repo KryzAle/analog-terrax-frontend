@@ -5,6 +5,7 @@ import type {
   AnalogSearchRequest,
   AnalogSearchResponse,
   CelestialBody,
+  EarthdataAtl03Record,
   LaserProfileComparisonResponse,
   PlanetarySite,
   SystemGetHealthResponse,
@@ -23,6 +24,22 @@ export async function systemGetHealth(): Promise<SystemGetHealthResponse> {
  */
 export async function planetaryGetTaxonomy(): Promise<TaxonomyResponse> {
   return apiFetch<TaxonomyResponse>("/api/v1/taxonomy");
+}
+
+/**
+ * List real extracted NASA Earthdata ATLAS/ICESat-2 L2A (ATL03 v007) records for all Earth sites
+ */
+export async function planetaryListEarthdataAtl03Records(): Promise<EarthdataAtl03Record[]> {
+  return apiFetch<EarthdataAtl03Record[]>("/api/v1/bodies/earth/earthdata");
+}
+
+/**
+ * Get real extracted NASA Earthdata ATLAS/ICESat-2 L2A (ATL03 v007) record for a specific Earth site
+ */
+export async function planetaryGetEarthdataAtl03Record(
+  siteId: string,
+): Promise<EarthdataAtl03Record> {
+  return apiFetch<EarthdataAtl03Record>(`/api/v1/bodies/earth/sites/${siteId}/earthdata`);
 }
 
 /**

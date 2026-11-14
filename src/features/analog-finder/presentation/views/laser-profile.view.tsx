@@ -47,7 +47,14 @@ export const LaserProfileView = ({ comparison, targetColor, earthColor }: LaserP
         {legend.map(({ series, color }) => (
           <li key={series.instrument} className="flex items-center gap-1.5">
             <span className="h-1 w-4 rounded-full" style={{ backgroundColor: color }} aria-hidden />
-            {series.instrument}
+            <span>
+              {series.instrument}
+              {series.granuleId.endsWith(".h5") && (
+                <span className="ml-1.5 font-mono text-[11px] text-lime">
+                  ({series.granuleId}{series.beam ? ` · ${series.beam.toUpperCase()}` : ""})
+                </span>
+              )}
+            </span>
           </li>
         ))}
       </ul>

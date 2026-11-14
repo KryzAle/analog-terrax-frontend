@@ -1,6 +1,16 @@
-import { analogsGetLaserProfileComparison, analogsSearchEarthAnalogs, planetaryListBodySites } from "@/client";
-import type { AnalogSearchRepository, ProfileRepository, SiteRepository } from "../../domain/repositories/analog-repositories";
+import {
+  analogsGetLaserProfileComparison,
+  analogsSearchEarthAnalogs,
+  planetaryGetEarthdataAtl03Record,
+  planetaryListBodySites,
+} from "@/client";
+import type {
+  AnalogSearchRepository,
+  ProfileRepository,
+  SiteRepository,
+} from "../../domain/repositories/analog-repositories";
 import { toSearchResult } from "../mappers/analog-match.mapper";
+import { toEarthdataTelemetry } from "../mappers/earthdata.mapper";
 import { toLaserComparison } from "../mappers/laser-profile.mapper";
 import { toSite } from "../mappers/site.mapper";
 
@@ -24,4 +34,6 @@ export const apiAnalogSearchRepository: AnalogSearchRepository = {
 export const apiProfileRepository: ProfileRepository = {
   compare: async (earthCellId, targetId) =>
     toLaserComparison(await analogsGetLaserProfileComparison(earthCellId, targetId)),
+  getEarthdataTelemetry: async (siteOrCellId) =>
+    toEarthdataTelemetry(await planetaryGetEarthdataAtl03Record(siteOrCellId)),
 };
