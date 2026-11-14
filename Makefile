@@ -1,7 +1,7 @@
 COMPOSE := docker compose -f compose.dev.yaml
 
 .DEFAULT_GOAL := help
-.PHONY: help install dev api build start typecheck lint doctor check up down logs shell rebuild clean
+.PHONY: help install dev api build start typecheck lint doctor domain check up down logs shell rebuild clean
 
 help: ## List available targets
 	@grep -E '^[a-z-]+:.*## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*## "} {printf "  \033[36m%-10s\033[0m %s\n", $$1, $$2}'
@@ -30,7 +30,10 @@ lint: ## Run next lint
 doctor: ## Analyze React code with react-doctor
 	npx -y react-doctor@latest
 
-check: typecheck build doctor ## Run all quality gates
+domain: ## Run assert-based domain checks (*.check.ts)
+	find src -name "*.check.ts" -exec npx -y tsx@4 {} \;
+
+check: typecheck domain build doctor ## Run all quality gates
 
 up: ## Start the dev container on :3000
 	$(COMPOSE) up -d --build
