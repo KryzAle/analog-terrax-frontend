@@ -7,18 +7,19 @@ type TargetHeroViewProps = {
   target: Site | null;
 };
 
-export const TargetHeroView = ({ world, target }: TargetHeroViewProps) => (
-  <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-space via-space/70 to-transparent p-6 pt-24">
+export const TargetHeroView = ({ world, target }: TargetHeroViewProps) => {
+  const name = target?.name ?? t.app.name;
+  return (
     <div
-      className="absolute -bottom-24 -left-16 size-80 rounded-full opacity-35 blur-[80px]"
-      style={{ backgroundColor: worldColor[world].css }}
-      aria-hidden
-    />
-    <p className="relative text-xs font-semibold uppercase tracking-widest" style={{ color: worldColor[world].css }}>
-      {t.worlds[world]} · {target?.region ?? t.app.tagline}
-    </p>
-    <h1 className="relative max-w-3xl text-5xl leading-[0.9] font-extrabold tracking-[-0.04em] text-balance 2xl:text-7xl">
-      {target?.name ?? t.app.name}
-    </h1>
-  </div>
-);
+      className="absolute bottom-3 left-3 z-10 max-w-[min(28rem,calc(50%-1rem))] rounded-tile border border-line border-l-4 bg-surface-solid/85 px-3 py-2 backdrop-blur-xl"
+      style={{ borderLeftColor: worldColor[world].css }}
+    >
+      <p className="truncate text-[11px] font-semibold tracking-widest uppercase" style={{ color: worldColor[world].css }}>
+        {t.worlds[world]} · {target?.region ?? t.app.tagline}
+      </p>
+      <h1 title={name} className="truncate text-lg leading-tight font-bold tracking-tight">
+        {name}
+      </h1>
+    </div>
+  );
+};
