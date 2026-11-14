@@ -38,17 +38,22 @@ jobs:
       VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
       VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      VERCEL_DEPLOY_HOOK_URL: ${{ secrets.VERCEL_DEPLOY_HOOK_URL }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Deploy to Vercel Production
         run: |
-          if [ -z "$VERCEL_TOKEN" ]; then
-            echo "VERCEL_TOKEN secret not set; relying on Vercel GitHub App integration or add VERCEL_TOKEN to repository secrets."
-            exit 0
+          if [ -n "$VERCEL_TOKEN" ]; then
+            npm install -g vercel@latest
+            vercel pull --yes --environment=production
+            vercel build --prod
+            vercel deploy --prebuilt --prod --yes
+          elif [ -n "$VERCEL_DEPLOY_HOOK_URL" ]; then
+            echo "Triggering Vercel production deployment via Deploy Hook..."
+            curl -fsSL -X POST "$VERCEL_DEPLOY_HOOK_URL"
+          else
+            echo "::error::Neither VERCEL_TOKEN nor VERCEL_DEPLOY_HOOK_URL secret is configured."
+            exit 1
           fi
-          npm install -g vercel@latest
-          vercel pull --yes --environment=production
-          vercel build --prod
-          vercel deploy --prebuilt --prod --yes
