@@ -2,6 +2,20 @@ export type World = "moon" | "mars";
 
 export type Body = World | "earth";
 
+export type EarthdataGranule = Readonly<{
+  dataset: string;
+  granuleId: string;
+  conceptId: string;
+  timeStart: string;
+  sizeMb: number;
+  httpsUrl: string;
+  beamId: string;
+  photonSampleCount: number;
+  segmentCount: number;
+  alongTrackReliefM: number;
+  alongTrackMeanElevationM: number;
+}>;
+
 export type Site = Readonly<{
   id: string;
   cellId: string;
@@ -15,4 +29,5 @@ export type Site = Readonly<{
   category: string | null;
   missionRelevance: string;
   dominantLithology: string | null;
+  earthdataGranule?: EarthdataGranule | null;
 }>;

@@ -64,6 +64,11 @@ export const AnalogListView = ({ matches, selectedId, isPending, isRefreshing, i
                     {match.site.region}
                     {match.site.isKnownAnalog && ` · ${t.finder.knownAnalogBadge}`}
                   </span>
+                  {match.site.earthdataGranule && (
+                    <span className="mt-0.5 inline-block truncate font-mono text-[10px] text-lime/90">
+                      ICESat-2 {match.site.earthdataGranule.beamId.toUpperCase()} · {match.site.earthdataGranule.conceptId}
+                    </span>
+                  )}
                 </span>
                 <ScorePill label={t.finder.match} pct={Math.round(match.overallPct)} />
               </span>

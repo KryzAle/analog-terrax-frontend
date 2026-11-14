@@ -40,6 +40,13 @@ export const useAnalogDetailViewModel = ({ target, match, activity }: DetailInpu
     staleTime: Infinity,
   });
 
+  const earthdata = useQuery({
+    queryKey: ["analogs", "earthdata", match?.site.id],
+    queryFn: () => profileRepository.getEarthdataTelemetry(match?.site.id ?? ""),
+    enabled: Boolean(match?.site.id),
+    staleTime: Infinity,
+  });
+
   const highlights =
     target && match ? splitHighlights(target, match, appConfig.highlightThresholds) : { similar: [], different: [] };
 
@@ -57,6 +64,8 @@ export const useAnalogDetailViewModel = ({ target, match, activity }: DetailInpu
     profile: profile.data ?? null,
     isProfileLoading: profile.isPending && profile.fetchStatus !== "idle",
     isProfileError: profile.isError,
+    earthdata: earthdata.data ?? null,
+    isEarthdataLoading: earthdata.isPending && earthdata.fetchStatus !== "idle",
   };
 };
 

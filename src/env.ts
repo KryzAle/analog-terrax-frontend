@@ -4,7 +4,7 @@ const envSchema = z.object({
   NEXT_PUBLIC_API_URL: z.string().url().default("http://localhost:8000"),
   NEXT_PUBLIC_DEMO_DATA: z
     .enum(["true", "false"])
-    .default("true")
+    .default("false")
     .transform((value) => value === "true"),
 });
 
