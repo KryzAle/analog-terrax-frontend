@@ -3,7 +3,7 @@ import { Orbit } from "lucide-react";
 export function AppHeader() {
   return (
     <header className="border-b border-slate-800/80 bg-slate-950/80 backdrop-blur">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
         <div className="flex items-center gap-2.5">
           <Orbit className="h-6 w-6 text-sky-400" />
           <span className="text-lg font-bold tracking-tight text-slate-100">
