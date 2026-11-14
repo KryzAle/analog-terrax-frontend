@@ -40,6 +40,74 @@ export type EarthdataGranuleSummary = {
   along_track_mean_elevation_m: number;
 };
 
+export type Earth2dDemProvenance = {
+  source: string;
+  window_km: number;
+  grid_shape: number[];
+  gsd_m: number;
+  mean_elevation_m: number;
+  min_elevation_m: number;
+  max_elevation_m: number;
+  relief_m: number;
+  slope_mean_deg: number;
+  slope_p90_deg: number;
+  ruggedness_tri_m: number;
+  roughness_rms_m: number;
+  hypsometric_integral: number;
+};
+
+export type MacrostratMappedUnit = {
+  map_id?: number | null;
+  source_id?: number | null;
+  name?: string;
+  strat_name?: string;
+  lith?: string;
+  descrip?: string;
+  age?: string;
+  t_int_name?: string;
+  b_int_name?: string;
+};
+
+export type MacrostratGeologyProvenance = {
+  source: string;
+  mapped_units_count: number;
+  mapped_units: MacrostratMappedUnit[];
+};
+
+export type EmitMineralRecord = {
+  mineral_id: number;
+  mineral_name: string;
+  pixel_count: number;
+  mean_band_depth: number;
+  max_band_depth: number;
+};
+
+export type EmitStreamedMineralogy = {
+  granule_id: string;
+  grid_shape?: number[];
+  valid_g1_pixels?: number;
+  valid_g2_pixels?: number;
+  top_group_1_minerals?: EmitMineralRecord[];
+  top_group_2_minerals?: EmitMineralRecord[];
+};
+
+export type EarthdataSatelliteGranuleRef = {
+  found: boolean;
+  short_name?: string | null;
+  granule_id?: string | null;
+  concept_id?: string | null;
+  time_start?: string | null;
+  size_mb?: number | null;
+  https_url?: string | null;
+  streamed_mineralogy?: EmitStreamedMineralogy | null;
+};
+
+export type EarthMultiSourceProvenance = {
+  topography_2d_dem: Earth2dDemProvenance;
+  geology_macrostrat: MacrostratGeologyProvenance;
+  earthdata_satellites: Record<string, EarthdataSatelliteGranuleRef>;
+};
+
 export type PlanetarySite = {
   site_id: string;
   cell_id: string;
@@ -58,6 +126,7 @@ export type PlanetarySite = {
   mineralogy: Record<string, number | null>;
   flags: EnvironmentalFlags;
   earthdata_granule?: EarthdataGranuleSummary | null;
+  earth_provenance?: EarthMultiSourceProvenance | null;
 };
 
 export type Atl03GranuleMetadata = {
@@ -125,6 +194,7 @@ export type EarthdataAtl03Record = {
   computed_topography: Atl03ComputedTopography;
   geolocation_segments: Atl03GeolocationSegment[];
   photons: Atl03PhotonSample[];
+  earth_provenance?: EarthMultiSourceProvenance | null;
 };
 
 export type LithologyClassSpec = {
