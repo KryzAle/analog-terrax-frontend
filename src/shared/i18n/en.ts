@@ -41,6 +41,18 @@ export const en = {
     mapLabel: "Map of Earth analog sites",
     markerLabel: (name: string, score: number) => `${name}, match ${score}`,
   },
+  map: {
+    layers: "Layers",
+    layersTitle: "Map layers",
+    basemaps: {
+      satellite: "Satellite",
+      topo: "Topographic",
+      relief: "NASA relief",
+      geology: "Geology",
+    },
+    legendTitle: "Match score",
+    legend: { high: "High ≥ 80", medium: "Medium ≥ 60", low: "Low < 60", known: "Known analog" },
+  },
   stats: {
     target: "Target",
     activity: "Activity",

@@ -79,6 +79,16 @@ body {
   filter: invert(1);
 }
 
+.maplibregl-map .maplibregl-ctrl-bottom-right {
+  z-index: 20;
+}
+
+.maplibregl-ctrl-scale {
+  background: var(--color-surface-solid);
+  border-color: var(--color-text-muted);
+  color: var(--color-text);
+}
+
 :focus-visible {
   outline: 2px solid var(--color-lime);
   outline-offset: 2px;

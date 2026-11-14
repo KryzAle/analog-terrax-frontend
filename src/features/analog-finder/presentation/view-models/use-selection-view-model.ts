@@ -2,6 +2,7 @@
 
 import { useCallback, useState } from "react";
 import { appConfig } from "@/shared/config/app-config";
+import { type BasemapId, basemaps, DEFAULT_BASEMAP_ID } from "@/shared/config/basemaps";
 import { useDebouncedValue } from "@/shared/lib/use-debounced-value";
 import { activities } from "../../data/activities";
 import type { Activity, Aspect, Weights, World } from "../../domain/entities";
@@ -15,6 +16,7 @@ export const useSelectionViewModel = () => {
   const [weights, setWeights] = useState<Weights>(DEFAULT_ACTIVITY.weights);
   const [selectedSiteId, setSelectedSiteId] = useState<string | null>(null);
   const [showKnownAnalogs, setShowKnownAnalogs] = useState(true);
+  const [basemapId, setBasemapId] = useState<BasemapId>(DEFAULT_BASEMAP_ID);
   const searchWeights = useDebouncedValue(weights, appConfig.weightsDebounceMs);
 
   const selectWorld = (next: World) => {
@@ -49,6 +51,9 @@ export const useSelectionViewModel = () => {
     isCustomWeights: weights !== activity.weights,
     selectedSiteId,
     showKnownAnalogs,
+    basemaps,
+    basemap: basemaps.find((item) => item.id === basemapId) ?? basemaps[0],
+    selectBasemap: setBasemapId,
     selectWorld,
     selectTarget,
     selectActivity,
