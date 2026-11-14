@@ -2,8 +2,8 @@
 
 import "maplibre-gl/dist/maplibre-gl.css";
 import * as maplibregl from "maplibre-gl";
-import { useEffect, useRef } from "react";
-import { appConfig } from "@/shared/config/app-config";
+import { type ReactNode, useEffect, useRef } from "react";
+import type { Basemap } from "@/shared/config/basemaps";
 import { t } from "@/shared/i18n";
 import { scoreTone, toneColor } from "@/shared/lib/score-tone";
 import type { AnalogMatch } from "../../domain/entities";
@@ -12,10 +12,12 @@ import type { AnalogMatch } from "../../domain/entities";
 maplibregl.setWorkerUrl(`https://unpkg.com/maplibre-gl@${maplibregl.getVersion()}/dist/maplibre-gl-worker.mjs`);
 
 type AnalogMapViewProps = {
+  style: Basemap["style"];
   topMatches: readonly AnalogMatch[];
   knownMatches: readonly AnalogMatch[];
   selectedId: string | null;
   onSelect: (siteId: string) => void;
+  children?: ReactNode;
 };
 
 const markerElement = (match: AnalogMatch, isKnown: boolean, isSelected: boolean, onSelect: (id: string) => void) => {
@@ -35,23 +37,34 @@ const markerElement = (match: AnalogMatch, isKnown: boolean, isSelected: boolean
   return button;
 };
 
-export const AnalogMapView = ({ topMatches, knownMatches, selectedId, onSelect }: AnalogMapViewProps) => {
+export const AnalogMapView = ({ style, topMatches, knownMatches, selectedId, onSelect, children }: AnalogMapViewProps) => {
+  const frameRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
+  const appliedStyleRef = useRef(style);
 
   useEffect(() => {
     if (!containerRef.current) return;
     const map = new maplibregl.Map({
       container: containerRef.current,
-      style: appConfig.basemapStyle,
+      style: appliedStyleRef.current,
       center: [0, 15],
       zoom: 1,
       attributionControl: { compact: true },
     });
     map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right");
+    map.addControl(new maplibregl.FullscreenControl({ container: frameRef.current ?? undefined }), "top-right");
+    map.addControl(new maplibregl.ScaleControl({ unit: "metric" }), "bottom-right");
     mapRef.current = map;
     return () => map.remove();
   }, []);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || appliedStyleRef.current === style) return;
+    appliedStyleRef.current = style;
+    map.setStyle(style, { diff: false });
+  }, [style]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -78,8 +91,11 @@ export const AnalogMapView = ({ topMatches, knownMatches, selectedId, onSelect }
   }, [topMatches]);
 
   return (
-    <div className="absolute inset-0">
+    <div ref={frameRef} className="absolute inset-0 bg-space">
       <div ref={containerRef} role="region" aria-label={t.finder.mapLabel} className="size-full" />
+      <div className="pointer-events-none absolute inset-x-3 top-3 z-20 flex flex-wrap items-start gap-2 pr-12 *:pointer-events-auto">
+        {children}
+      </div>
     </div>
   );
 };

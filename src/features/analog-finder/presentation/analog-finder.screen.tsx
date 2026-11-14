@@ -12,6 +12,8 @@ import { ActivityPickerView } from "./views/activity-picker.view";
 import { AnalogDetailDrawerView } from "./views/analog-detail-drawer.view";
 import { AnalogListView } from "./views/analog-list.view";
 import { StatRowView } from "./views/stat-row.view";
+import { MapLayerSwitcherView } from "./views/map-layer-switcher.view";
+import { MapLegendView } from "./views/map-legend.view";
 import { TargetHeroView } from "./views/target-hero.view";
 import { TargetListView } from "./views/target-list.view";
 import { WeightsPanelView } from "./views/weights-panel.view";
@@ -71,11 +73,19 @@ export const AnalogFinderScreen = () => {
           />
           <section className="relative min-h-[420px] flex-1 overflow-hidden rounded-frame border border-line bg-surface">
             <AnalogMapView
+              style={selection.basemap.style}
               topMatches={results.topMatches}
               knownMatches={results.knownMatches}
               selectedId={selection.selectedSiteId}
               onSelect={selection.openSite}
-            />
+            >
+              <MapLayerSwitcherView
+                basemaps={selection.basemaps}
+                selectedId={selection.basemap.id}
+                onSelect={selection.selectBasemap}
+              />
+              <MapLegendView />
+            </AnalogMapView>
             <TargetHeroView world={selection.world} target={targets.target} />
           </section>
           <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_auto]">
