@@ -1,31 +1,46 @@
-# Analog Terrax — Frontend (`analog-terrax-frontend`)
+# AnalogTerraX — Frontend
 
-Scalable Next.js 15 (App Router, TypeScript, Tailwind CSS v4) frontend infrastructure for **Analog Terrax** (NASA Space Apps Challenge), configured for **Vercel (Fluid Compute)**.
+Earth analogs for the Moon base and Mars sites. NASA Space Apps Challenge 2026.
 
-## Architecture Highlights
-- **`src/app/`**: Thin routing & error boundary layer (`layout.tsx`, `page.tsx`, `error.tsx`, `global-error.tsx`, `not-found.tsx`).
-- **`src/features/`**: Feature-sliced domain modules so multiple teammates can build features concurrently without merge conflicts.
-- **`src/client/`**: Auto-generated OpenAPI TypeScript SDK synced directly from `analog-terrax-backend`'s `/openapi.json`.
-- **`src/providers/`**: SSR-safe `@tanstack/react-query` provider.
-- **`src/env.ts`**: Runtime/build-time Zod environment configuration.
+Next.js 15 (App Router, TypeScript, Tailwind CSS v4) dashboard on Vercel, backed by the FastAPI service [`analog-terrax-backend`](https://analog-terrax-backend.vercel.app) through an OpenAPI-generated client in `src/client/`.
 
-## Local Development
+## Docs
+
+- [Constitution](.specify/memory/constitution.md): project principles
+- [Design guidelines](docs/design-guidelines.md)
+- [Coding guidelines](docs/coding-guidelines.md): clean architecture + MVVM
+- [Spec 001: Analog finder](specs/001-analog-finder/spec.md)
+
+## Local development
 
 ```bash
-# 1. Install dependencies
-npm install
-
-# 2. Copy environment variables
 cp .env.example .env.local
-
-# 3. Start Next.js development server on port 3000
-npm run dev
-
-# 4. Regenerate API client from Backend OpenAPI spec
-npm run generate:api
+make install
+make dev        # http://localhost:3000 (use localhost, not 127.0.0.1: backend CORS)
+make api        # regenerate src/client from the running backend
 ```
 
+Or in Docker (development only):
+
+```bash
+make up         # http://localhost:3000, hot reload
+make logs
+make down
+make rebuild    # after changing package.json
+```
+
+Run `make` to list all targets. `make check` runs typecheck, build and react-doctor.
+
+## Environment
+
+| Variable | Default | Purpose |
+|---|---|---|
+| `NEXT_PUBLIC_API_URL` | `http://localhost:8000` | Backend base URL, called from the browser. Deployed: `https://analog-terrax-backend.vercel.app` |
+| `NEXT_PUBLIC_DEMO_DATA` | `true` | Shows the "Demo data" banner while the backend serves placeholder data |
+
 ## Deploying to Vercel
+
+Pushes to `main` deploy through CI. Manually:
 
 ```bash
 vercel link --yes --project analog-terrax-frontend

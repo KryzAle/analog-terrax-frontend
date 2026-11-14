@@ -1,23 +1,26 @@
 "use client";
 
-export default function ErrorBoundary({
-  error,
-  reset,
-}: {
+import { t } from "@/shared/i18n";
+
+type ErrorBoundaryProps = {
   error: Error & { digest?: string };
   reset: () => void;
-}) {
-  return (
-    <div className="rounded-xl border border-rose-900/60 bg-rose-950/30 p-6">
-      <h2 className="text-lg font-semibold text-rose-200">Something went wrong</h2>
-      <p className="mt-1 text-sm text-rose-300/80">{error.message}</p>
+};
+
+const ErrorBoundary = ({ error, reset }: ErrorBoundaryProps) => (
+  <main className="mx-auto max-w-md px-6 py-16">
+    <div className="rounded-card border border-danger/40 bg-surface p-6 backdrop-blur-xl">
+      <h2 className="text-lg font-semibold text-danger">{t.errors.title}</h2>
+      <p className="mt-1 text-sm text-text-muted">{error.message}</p>
       <button
         type="button"
-        onClick={() => reset()}
-        className="mt-4 rounded-lg bg-rose-600 px-4 py-2 text-xs font-semibold text-white hover:bg-rose-500"
+        onClick={reset}
+        className="mt-4 rounded-full bg-lime px-4 py-2 text-xs font-semibold text-space"
       >
-        Try again
+        {t.errors.retry}
       </button>
     </div>
-  );
-}
+  </main>
+);
+
+export default ErrorBoundary;
