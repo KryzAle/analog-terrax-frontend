@@ -34,7 +34,9 @@ const markerElement = (match: AnalogMatch, isKnown: boolean, isSelected: boolean
   ].join(" ");
   button.style.backgroundColor = isKnown ? "var(--color-known)" : toneColor[scoreTone(score)];
   button.addEventListener("click", () => onSelect(match.site.id));
-  return button;
+  const anchor = document.createElement("div");
+  anchor.append(button);
+  return anchor;
 };
 
 export const AnalogMapView = ({ style, topMatches, knownMatches, selectedId, onSelect, children }: AnalogMapViewProps) => {
