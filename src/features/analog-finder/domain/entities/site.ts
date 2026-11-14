@@ -29,5 +29,6 @@ export type Site = Readonly<{
   category: string | null;
   missionRelevance: string;
   dominantLithology: string | null;
+  imageUrl: string | null;
   earthdataGranule?: EarthdataGranule | null;
 }>;

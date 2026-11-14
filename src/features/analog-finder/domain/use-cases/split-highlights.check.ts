@@ -5,7 +5,7 @@ import { splitHighlights } from "./split-highlights";
 
 const site = (id: string, dominantLithology: string | null): Site => ({
   id, cellId: id, body: "earth", name: id, region: "", lat: 0, lon: 0, elevationM: 0,
-  isKnownAnalog: false, category: null, missionRelevance: "", dominantLithology,
+  isKnownAnalog: false, category: null, missionRelevance: "", dominantLithology, imageUrl: null,
 });
 
 const feature = (label: string, closenessPct: number) => ({
