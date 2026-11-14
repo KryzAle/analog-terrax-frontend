@@ -14,6 +14,7 @@ A one-page dashboard. The user picks a world (Moon/Mars), a target location and 
 2. Target location, chosen from a list (a Moon/Mars map is optional). The list comes from the backend (`planetaryListBodySites`), never hardcoded.
    - Moon (south pole, Artemis candidates): Shackleton connecting ridge, Malapert Massif, Haworth, Mons Mouton, Nobile Rim, de Gerlache Rim.
    - Mars: Jezero crater, Amazonis Planitia, Gale crater.
+   - The deployed backend serves a different set today (6 Moon, 6 Mars, 14 Earth, no Ecuador sites): see "Backend findings" in spec 001. The UI shows whatever the API returns.
 3. Activity (dropdown or icon cards): rover mobility, drilling/sampling, construction/regolith, EVA field ops, instrument testing, landing/hazard assessment.
 4. Results:
    - An Earth map with markers for the top N sites (default 5), colored by score.
@@ -72,9 +73,9 @@ The FastAPI backend computes all scores. The frontend sends weights to `POST /ap
 
 ### Demo script the UI must support (~2 min)
 
-1. Moon → Shackleton connecting ridge → Rover mobility: the top analogs appear on the map, with known analogs in grey.
-2. Switch to Mars → Amazonis Planitia → Instrument testing: the ranking changes.
-3. Open the Arenal del Chimborazo card: radar chart, similar/different bullets, side-by-side images.
+1. Moon → Shackleton Crater Rim → Rover mobility: the top analogs appear on the map, with known analogs in grey.
+2. Switch to Mars → Arcadia Planitia → Instrument testing: the ranking changes.
+3. Open the top Earth analog card: radar chart, similar/different bullets, laser profile.
 4. Point to the Earth limits note and the data sources.
 
 ### Acceptance criteria
@@ -120,7 +121,7 @@ make check       # typecheck + build + react-doctor
 make up | down | logs | shell | rebuild   # Docker dev container (Dockerfile.dev, compose.dev.yaml), development only
 ```
 
-`npm run generate:api:file` regenerates from `../analog-terrax-backend/openapi.json` instead. In Docker the app reaches a backend on the host at `host.docker.internal:8000`. `make rebuild` is needed after changing `package.json`, since the container keeps `node_modules` in a named volume. `npm run lint` needs ESLint, which is not installed. No test runner is configured; domain use cases get assert-based `*.check.ts` files. CI (`.github/workflows/ci.yml`, Node 22) runs `typecheck` and `build` on pushes/PRs to `main` and `develop`, and deploys to Vercel on pushes to `main`.
+`npm run generate:api:file` regenerates from `../analog-terrax-backend/openapi.json` instead. The browser calls the API directly (not the Next server), so `NEXT_PUBLIC_API_URL` must be reachable from the browser, also when running in Docker. Backend CORS allows `http://localhost:3000` and `https://analog-terrax-frontend.vercel.app` (not `127.0.0.1`). `make rebuild` is needed after changing `package.json`, since the container keeps `node_modules` in a named volume. `npm run lint` needs ESLint, which is not installed. No test runner is configured; domain use cases get assert-based `*.check.ts` files. CI (`.github/workflows/ci.yml`, Node 22) runs `typecheck` and `build` on pushes/PRs to `main` and `develop`, and deploys to Vercel on pushes to `main`.
 
 Env (validated in `src/env.ts`, exposed via `src/shared/config/app-config.ts`): `NEXT_PUBLIC_API_URL` (default `http://localhost:8000`) and `NEXT_PUBLIC_DEMO_DATA` (default `"true"`, shows the "Demo data" banner).
 

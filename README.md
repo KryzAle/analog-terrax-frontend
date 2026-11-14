@@ -16,14 +16,14 @@ Next.js 15 (App Router, TypeScript, Tailwind CSS v4) dashboard on Vercel, backed
 ```bash
 cp .env.example .env.local
 make install
-make dev        # http://localhost:3000, expects the backend on http://localhost:8000
+make dev        # http://localhost:3000 (use localhost, not 127.0.0.1: backend CORS)
 make api        # regenerate src/client from the running backend
 ```
 
 Or in Docker (development only):
 
 ```bash
-make up         # http://localhost:3000, hot reload; reaches a host backend at host.docker.internal:8000
+make up         # http://localhost:3000, hot reload
 make logs
 make down
 make rebuild    # after changing package.json
@@ -35,7 +35,7 @@ Run `make` to list all targets. `make check` runs typecheck, build and react-doc
 
 | Variable | Default | Purpose |
 |---|---|---|
-| `NEXT_PUBLIC_API_URL` | `http://localhost:8000` | Backend base URL |
+| `NEXT_PUBLIC_API_URL` | `http://localhost:8000` | Backend base URL, called from the browser. Deployed: `https://analog-terrax-backend.vercel.app` |
 | `NEXT_PUBLIC_DEMO_DATA` | `true` | Shows the "Demo data" banner while the backend serves placeholder data |
 
 ## Deploying to Vercel

@@ -12,12 +12,12 @@ A one-page dashboard where a user picks a Moon or Mars target location and an ac
 
 As a mission planner, I want to choose a world, a target location and an activity so that I see which Earth sites are the best places to test that activity.
 
-**Independent test:** Select Moon → Shackleton connecting ridge → Rover mobility and see a ranked list and map markers.
+**Independent test:** Select Moon → Shackleton Crater Rim → Rover mobility and see a ranked list and map markers.
 
 **Acceptance scenarios**
 
-1. **Given** the app is open and the backend is reachable, **When** I select Moon, Shackleton connecting ridge and Rover mobility, **Then** the top 5 Earth sites appear as ranked cards and as score-colored map markers.
-2. **Given** results for a Moon target, **When** I switch to Mars → Amazonis Planitia → Instrument testing, **Then** the target list shows only Mars locations and the ranking updates.
+1. **Given** the app is open and the backend is reachable, **When** I select Moon, Shackleton Crater Rim and Rover mobility, **Then** the top 5 Earth sites appear as ranked cards and as score-colored map markers.
+2. **Given** results for a Moon target, **When** I switch to Mars → Arcadia Planitia → Instrument testing, **Then** the target list shows only Mars locations and the ranking updates.
 3. **Given** results are shown, **When** I look at any card, **Then** I see name, region, overall score 0–100 and T/G/M sub-scores as numbers.
 
 ### US2 — Understand one analog in detail (Priority: P1)
@@ -66,7 +66,7 @@ As a presenter, I want the demo to keep working when the venue internet is unrel
 - **FR-003**: Ranking MUST come from `POST /api/v1/analogs/search` with the selected target, the activity's weights (or slider values) and `k` = top N (default 5). The frontend never computes or re-weights scores.
 - **FR-004**: Activities (name, icon, default weights, test ideas) come from a frontend config file until the backend exposes them; adding one needs no component change.
 - **FR-005**: Each result card shows name, region, `overall_pct` and T/G/M sub-scores as numbers.
-- **FR-006**: "Similar in" and "Different in" are derived from `top_contributing_features[].closeness_pct` with thresholds kept in config. Both lists are always visible; "Different in" is never collapsed.
+- **FR-006**: "Similar in" and "Different in" are derived from the returned feature comparisons (`closeness_pct`) with thresholds kept in config. Both lists are always visible; "Different in" is never collapsed, and shows "No major differences in the compared features" when empty (see F6).
 - **FR-007**: The detail drawer shows the laser profile comparison from `GET /api/v1/analogs/{cell}/profile`.
 - **FR-008**: Every site is labeled "candidate analog to evaluate"; the word "official" never appears.
 - **FR-009**: When `NEXT_PUBLIC_DEMO_DATA` is on, a "Demo data" banner is visible on every view.
@@ -92,18 +92,27 @@ As a presenter, I want the demo to keep working when the venue internet is unrel
 
 ## Demo script (must be supported end to end)
 
-1. Open the app → Moon → Shackleton connecting ridge → Rover mobility. The map shows top analogs; known analogs appear grey.
-2. Switch to Mars → Amazonis Planitia → Instrument testing; the ranking changes.
-3. Open the top Earth analog card (Arenal del Chimborazo if the backend ranks it): radar chart, "Similar in", "Different in", laser profile.
+Uses the sites the deployed backend serves today (see F5).
+
+1. Open the app → Moon → Shackleton Crater Rim → Rover mobility. The map shows top analogs; known analogs appear grey.
+2. Switch to Mars → Arcadia Planitia Ice-Rich Plains → Instrument testing; the ranking changes.
+3. Open the top Earth analog card: radar chart, "Similar in", "Different in", laser profile.
 4. Point to the Earth limits note and the data sources.
 
-## Open questions (backend)
+## Backend findings (checked against https://analog-terrax-backend.vercel.app on 2026-11-14)
 
-- **Q1**: [NEEDS CLARIFICATION: Will the API return a confidence level per match? Until then the badge is hidden.]
-- **Q2**: [NEEDS CLARIFICATION: Will the API return Earth/target images with a scale label? Until then placeholders are shown.]
-- **Q3**: [NEEDS CLARIFICATION: Will the API return data source links per match? Until then a static source list per body is shown.]
-- **Q4**: [NEEDS CLARIFICATION: Should activities and their weights move to the backend?]
-- **Q5**: [NEEDS CLARIFICATION: Do the backend target sites match the brief's list (6 Moon, 3 Mars) and include the Ecuador candidates?]
+The live responses match the generated `@/client` types.
+
+- **F1 Confidence:** not returned. The confidence badge stays hidden.
+- **F2 Images:** not returned. The image comparison shows placeholders.
+- **F3 Sources:** no source links per match; only the instrument name on laser profiles (e.g. "LRO LOLA"). A static source list per body (LOLA, Diviner, MOLA, CRISM, NASADEM, ASTER GED, EMIT, ICESat-2) is shown.
+- **F4 Activities:** not in the API. Activities and their default weights stay in `src/shared/config/activities.ts`; weights are sent with each search.
+- **F5 Sites differ from the brief:**
+  - Moon (6): Shackleton Crater Rim, de Gerlache Rim 2, Marius Hills Skylight, Aristarchus Plateau, Mare Tranquillitatis Pit, Schrödinger Basin. Malapert Massif, Haworth, Mons Mouton and Nobile Rim are missing.
+  - Mars (6): Jezero, Arcadia Planitia, Elysium Planitia, Mawrth Vallis, Arsia Mons pits, Melas Chasma. Amazonis Planitia and Gale crater are missing.
+  - Earth (14 candidates, 10 known analogs). No Ecuador sites, so Arenal del Chimborazo and the Andes case study need backend data first.
+- **F6 Similar / different:** each match returns `top_contributing_features` with `closeness_pct`. In the Shackleton sample all three top features score ≥ 99.9 %, so "Different in" needs features beyond the top ones; ask the backend to return all compared features or the lowest ones as well.
+- **F7 Scale:** a search evaluates all 14 Earth candidates; the heatmap returns 134 Earth cells.
 
 ## Out of scope
 
