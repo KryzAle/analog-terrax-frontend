@@ -106,6 +106,152 @@ export const EarthdataTelemetryView = ({ telemetry }: EarthdataTelemetryViewProp
           </svg>
         </div>
       )}
+
+      {telemetry.dem2d && (
+        <div className="space-y-1.5 border-t border-line/60 pt-2.5">
+          <span className="block text-[11px] font-semibold text-text-muted">
+            {t.detail.dem2dTitle}
+          </span>
+          <div className="grid grid-cols-3 gap-2 text-xs">
+            <div className="rounded-lg border border-line/80 bg-surface/50 p-2">
+              <span className="block text-[10px] text-text-muted">{t.detail.dem2dRelief}</span>
+              <span className="font-semibold tabular-nums">
+                {formatNumber(telemetry.dem2d.reliefM, "m")}
+              </span>
+            </div>
+            <div className="rounded-lg border border-line/80 bg-surface/50 p-2">
+              <span className="block text-[10px] text-text-muted">{t.detail.dem2dSlope}</span>
+              <span className="font-semibold tabular-nums">
+                {formatNumber(telemetry.dem2d.slopeMeanDeg, "deg")}
+              </span>
+            </div>
+            <div className="rounded-lg border border-line/80 bg-surface/50 p-2">
+              <span className="block text-[10px] text-text-muted">{t.detail.dem2dTri}</span>
+              <span className="font-semibold tabular-nums">
+                {formatNumber(telemetry.dem2d.ruggednessTriM, "m")}
+              </span>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {telemetry.macrostratUnits.length > 0 && (
+        <div className="space-y-1.5 border-t border-line/60 pt-2.5">
+          <span className="block text-[11px] font-semibold text-text-muted">
+            {t.detail.macrostratTitle}
+          </span>
+          <div className="space-y-1">
+            {telemetry.macrostratUnits.map((unit, idx) => (
+              <div
+                key={`${unit.name}-${idx}`}
+                className="rounded-lg border border-line/80 bg-surface/50 px-2.5 py-1.5 text-[11px]"
+              >
+                <div className="flex flex-wrap items-center justify-between gap-1">
+                  <span className="font-semibold text-text">{unit.name}</span>
+                  {unit.age && (
+                    <span className="font-mono text-[10px] text-lime">{unit.age}</span>
+                  )}
+                </div>
+                {unit.lith && (
+                  <p className="line-clamp-2 text-[10px] text-text-muted">{unit.lith}</p>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {telemetry.emitMineralogy && (
+        <div className="space-y-1.5 border-t border-line/60 pt-2.5">
+          <div className="flex flex-wrap items-center justify-between gap-1">
+            <span className="text-[11px] font-semibold text-lime">{t.detail.emitTitle}</span>
+            {telemetry.emitMineralogy.httpsUrl && (
+              <a
+                href={telemetry.emitMineralogy.httpsUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-1 font-mono text-[10px] text-text-muted hover:text-text"
+              >
+                {telemetry.emitMineralogy.granuleId}
+                <ExternalLink className="size-2.5" strokeWidth={1.5} aria-hidden />
+              </a>
+            )}
+          </div>
+          <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+            {telemetry.emitMineralogy.topGroup1Minerals.length > 0 && (
+              <div className="rounded-lg border border-line/80 bg-surface/50 p-2 text-[11px]">
+                <span className="mb-1 block text-[10px] text-text-muted">
+                  {t.detail.emitGroup1}
+                </span>
+                {telemetry.emitMineralogy.topGroup1Minerals.map((m) => (
+                  <div
+                    key={m.mineralName}
+                    className="flex items-center justify-between gap-2 text-[11px]"
+                  >
+                    <span className="truncate font-medium">{m.mineralName}</span>
+                    <span className="shrink-0 font-mono text-[10px] text-lime tabular-nums">
+                      BD {(m.meanBandDepth * 100).toFixed(1)}% · {m.pixelCount} px
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+            {telemetry.emitMineralogy.topGroup2Minerals.length > 0 && (
+              <div className="rounded-lg border border-line/80 bg-surface/50 p-2 text-[11px]">
+                <span className="mb-1 block text-[10px] text-text-muted">
+                  {t.detail.emitGroup2}
+                </span>
+                {telemetry.emitMineralogy.topGroup2Minerals.map((m) => (
+                  <div
+                    key={m.mineralName}
+                    className="flex items-center justify-between gap-2 text-[11px]"
+                  >
+                    <span className="truncate font-medium">{m.mineralName}</span>
+                    <span className="shrink-0 font-mono text-[10px] text-lime tabular-nums">
+                      BD {(m.meanBandDepth * 100).toFixed(1)}% · {m.pixelCount} px
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {telemetry.satelliteGranules.length > 0 && (
+        <div className="space-y-1 border-t border-line/60 pt-2">
+          <span className="block text-[10px] text-text-muted">
+            {t.detail.satelliteGranulesTitle}
+          </span>
+          <div className="flex flex-wrap gap-1.5">
+            {telemetry.satelliteGranules.map((sat) =>
+              sat.httpsUrl ? (
+                <a
+                  key={sat.key}
+                  href={sat.httpsUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-1 rounded-md border border-line/80 bg-surface/60 px-2 py-0.5 font-mono text-[10px] text-text-muted transition hover:border-lime/50 hover:text-text"
+                  title={sat.granuleId}
+                >
+                  <span className="font-semibold text-lime">{sat.shortName}</span>
+                  <span className="max-w-[140px] truncate">{sat.granuleId}</span>
+                  <ExternalLink className="size-2.5 shrink-0" strokeWidth={1.5} aria-hidden />
+                </a>
+              ) : (
+                <span
+                  key={sat.key}
+                  className="inline-flex items-center gap-1 rounded-md border border-line/80 bg-surface/60 px-2 py-0.5 font-mono text-[10px] text-text-muted"
+                  title={sat.granuleId}
+                >
+                  <span className="font-semibold text-lime">{sat.shortName}</span>
+                  <span className="max-w-[140px] truncate">{sat.granuleId}</span>
+                </span>
+              ),
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
