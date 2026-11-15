@@ -130,6 +130,7 @@ export type PlanetarySite = {
   flags: EnvironmentalFlags;
   earthdata_granule?: EarthdataGranuleSummary | null;
   earth_provenance?: EarthMultiSourceProvenance | null;
+  planetary_provenance?: Record<string, unknown> | null;
 };
 
 export type Atl03GranuleMetadata = {
