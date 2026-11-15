@@ -46,6 +46,7 @@ Format: `- [ ] T### [P] [USn] Description (path)`. `[P]` = can run in parallel w
 ## Phase 5: US3 — Weights (P2)
 
 - [x] T040 [US3] Weights panel view (three native range inputs + values + reset, debounced re-query)
+- [x] T041 [US3] Animate re-ranking: cards glide to their new rank, scores and bars tween, up/down rank chevron
 
 ## Phase 6: US4 — Known analogs (P3)
 

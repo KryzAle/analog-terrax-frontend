@@ -36,6 +36,8 @@ export const en = {
     showKnownAnalogs: "Show known analog sites",
     knownAnalogBadge: "Known analog",
     rank: (rank: number) => `#${rank}`,
+    rankUp: (places: number) => `Up ${places} since the last ranking`,
+    rankDown: (places: number) => `Down ${places} since the last ranking`,
     match: "Match",
     openDetail: (name: string) => `Open details for ${name}`,
     mapLabel: "Map of Earth analog sites",
