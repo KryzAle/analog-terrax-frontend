@@ -59,6 +59,7 @@ Format: `- [ ] T### [P] [USn] Description (path)`. `[P]` = can run in parallel w
 ## Phase 8: Polish
 
 - [x] T089 Remove `src/features/analog-explorer/` once the new screen covers it
+- [x] T093 "About AnalogTerraX" dialog: shown on the first visit and from the rail logo, one OK button
 - [ ] T090 Run the demo script end to end against the deployed backend
 - [ ] T091 Keyboard-only pass and contrast check against the design guidelines
 - [ ] T092 `npm run typecheck`, `npm run build`, `npx react-doctor@latest`; zero console errors

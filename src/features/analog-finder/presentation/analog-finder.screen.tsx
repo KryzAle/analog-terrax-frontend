@@ -5,11 +5,13 @@ import { useRef } from "react";
 import { DemoBanner } from "@/shared/ui/demo-banner";
 import { useAnalogDetailViewModel } from "./view-models/use-analog-detail-view-model";
 import { useAnalogResultsViewModel } from "./view-models/use-analog-results-view-model";
+import { useIntroViewModel } from "./view-models/use-intro-view-model";
 import { useSelectionViewModel } from "./view-models/use-selection-view-model";
 import { useTargetsViewModel } from "./view-models/use-targets-view-model";
 import { ActivityPickerView } from "./views/activity-picker.view";
 import { AnalogDetailDrawerView } from "./views/analog-detail-drawer.view";
 import { AnalogListView } from "./views/analog-list.view";
+import { IntroDialogView } from "./views/intro-dialog.view";
 import { MapLayerSwitcherView } from "./views/map-layer-switcher.view";
 import { MapLegendView } from "./views/map-legend.view";
 import { TargetHeroView } from "./views/target-hero.view";
@@ -32,6 +34,7 @@ export const AnalogFinderScreen = () => {
   });
   const selectedMatch = results.allMatches.find((match) => match.site.id === selection.selectedSiteId) ?? null;
   const detail = useAnalogDetailViewModel({ target: targets.target, match: selectedMatch, activity: selection.activity });
+  const intro = useIntroViewModel();
   const mapAreaRef = useRef<HTMLElement>(null);
 
   return (
@@ -43,6 +46,7 @@ export const AnalogFinderScreen = () => {
           showKnownAnalogs={selection.showKnownAnalogs}
           onSelectWorld={selection.selectWorld}
           onToggleKnownAnalogs={selection.toggleKnownAnalogs}
+          onOpenAbout={intro.open}
         />
 
         <div className="pointer-events-auto flex min-h-0 flex-col gap-4">
@@ -108,6 +112,7 @@ export const AnalogFinderScreen = () => {
       </div>
 
       {detail.isOpen && <AnalogDetailDrawerView {...detail} onClose={selection.closeSite} />}
+      <IntroDialogView isOpen={intro.isOpen} onClose={intro.close} />
     </div>
   );
 };
