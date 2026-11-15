@@ -1,6 +1,6 @@
 import type { PlanetarySite } from "@/client";
 import type { Site } from "../../domain/entities";
-import { siteImageUrl } from "../site-imagery";
+import { siteImage } from "../site-imagery";
 
 const dominantKey = (fractions: Record<string, number>): string | null =>
   Object.entries(fractions).reduce<[string | null, number]>(
@@ -21,7 +21,7 @@ export const toSite = (dto: PlanetarySite): Site => ({
   category: dto.analog_category ?? null,
   missionRelevance: dto.mission_relevance,
   dominantLithology: dominantKey(dto.geology_fractions),
-  imageUrl: siteImageUrl(dto.body, dto.lat, dto.lon),
+  image: siteImage(dto.body, dto.lat, dto.lon),
   earthdataGranule: dto.earthdata_granule
     ? {
         dataset:
