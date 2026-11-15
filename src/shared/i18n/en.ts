@@ -17,6 +17,7 @@ export const en = {
     open: "About AnalogTerraX",
     eyebrow: "NASA Space Apps Challenge 2026",
     title: "Find Earth's stand-ins for the Moon and Mars",
+    pitchDeckHint: "(pitch deck, PDF, opens in a new tab)",
     description:
       "AnalogTerraX ranks places on Earth that resemble a Moon or Mars site in topography, geology and mineralogy, so teams can choose where to rehearse a mission before flying it.",
     steps: {

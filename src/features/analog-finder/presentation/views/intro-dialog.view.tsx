@@ -1,7 +1,8 @@
 "use client";
 
-import { FlaskConical, ListOrdered, type LucideIcon, Orbit } from "lucide-react";
+import { ExternalLink, FlaskConical, ListOrdered, type LucideIcon, Orbit } from "lucide-react";
 import { useEffect, useRef } from "react";
+import { appConfig } from "@/shared/config/app-config";
 import { t } from "@/shared/i18n";
 import { EarthLimitsNote } from "@/shared/ui/earth-limits-note";
 
@@ -39,7 +40,16 @@ export const IntroDialogView = ({ isOpen, onClose }: IntroDialogViewProps) => {
         <header className="space-y-2">
           <p className="text-[11px] font-semibold tracking-widest text-lime uppercase">{t.intro.eyebrow}</p>
           <h2 id="intro-title" className="text-2xl leading-tight font-bold tracking-tight text-balance">
-            {t.intro.title}
+            <a
+              href={appConfig.pitchDeckUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-sm underline decoration-lime/40 decoration-2 underline-offset-4 transition-colors duration-200 hover:text-lime hover:decoration-lime"
+            >
+              {t.intro.title}
+              <ExternalLink className="ml-1.5 inline size-5 align-baseline text-lime" strokeWidth={2} aria-hidden />
+              <span className="sr-only"> {t.intro.pitchDeckHint}</span>
+            </a>
           </h2>
           <p id="intro-description" className="text-sm leading-relaxed text-text-muted">
             {t.intro.description}
