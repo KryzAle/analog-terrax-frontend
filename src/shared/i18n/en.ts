@@ -13,6 +13,30 @@ export const en = {
     earthLimits:
       "Earth cannot reproduce reduced gravity, the lunar vacuum, the thin Martian atmosphere or space radiation.",
   },
+  intro: {
+    open: "About AnalogTerraX",
+    eyebrow: "NASA Space Apps Challenge 2026",
+    title: "Find Earth's stand-ins for the Moon and Mars",
+    pitchDeckHint: "(pitch deck, PDF, opens in a new tab)",
+    description:
+      "AnalogTerraX ranks places on Earth that resemble a Moon or Mars site in topography, geology and mineralogy, so teams can choose where to rehearse a mission before flying it.",
+    steps: {
+      target: {
+        title: "Choose a world and a target",
+        body: "Artemis candidates at the lunar south pole or Mars landing sites, from the left panel.",
+      },
+      activity: {
+        title: "Pick the activity to test",
+        body: "Rover driving, drilling, EVA, landing and more. Each one weighs the three aspects differently.",
+      },
+      compare: {
+        title: "Compare Earth analogs",
+        body: "Open a ranked site to see why it matches, where it differs and the data behind it. Fine-tune with the T/G/M sliders.",
+      },
+    },
+    candidateNote: "Every result is a candidate analog to evaluate, never an official one.",
+    ok: "OK",
+  },
   worlds: {
     moon: "Moon",
     mars: "Mars",

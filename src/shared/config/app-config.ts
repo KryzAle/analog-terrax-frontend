@@ -6,5 +6,6 @@ export const appConfig = {
   topN: 5,
   searchLimit: 50,
   weightsDebounceMs: 300,
+  pitchDeckUrl: "/analog-terrax-pitch-deck.pdf",
   highlightThresholds: { similarFromPct: 85, differentBelowPct: 70, weakAspectBelow: 0.7 },
 } as const;

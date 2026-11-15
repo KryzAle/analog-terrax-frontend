@@ -134,6 +134,7 @@ From 1280 px the Earth map is **full-bleed**: it fills the whole area under the 
 | `MapMarker` | Score-colored dot with white 2 px ring and score label on hover/focus; known analogs `--color-known`; selected = lime ring + pulse |
 | `DemoBanner` | Thin warning strip at top of the app: "Demo data — not real results" |
 | `EarthLimitsNote` | Always-visible glass note with an info icon at the bottom of the analog detail drawer |
+| `IntroDialogView` | Native modal `<dialog>` (`showModal`), glass card, max-width 512, lime eyebrow, three numbered steps, candidate note + `EarthLimitsNote`, one full-width lime **OK** button. Opens on the first visit (`localStorage` flag via `useStoredFlag`) and from the rail logo; `Esc` and a backdrop click also close it |
 | `SourceList` | Small muted links with an external-link icon |
 
 ## 6. Effects and motion
