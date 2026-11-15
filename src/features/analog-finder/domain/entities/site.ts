@@ -16,6 +16,13 @@ export type EarthdataGranule = Readonly<{
   alongTrackMeanElevationM: number;
 }>;
 
+export type SiteImage = Readonly<{
+  thumbnailUrl: string;
+  previewUrl: string;
+  widthKm: number;
+  source: string;
+}>;
+
 export type Site = Readonly<{
   id: string;
   cellId: string;
@@ -29,6 +36,6 @@ export type Site = Readonly<{
   category: string | null;
   missionRelevance: string;
   dominantLithology: string | null;
-  imageUrl: string | null;
+  image: SiteImage | null;
   earthdataGranule?: EarthdataGranule | null;
 }>;

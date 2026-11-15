@@ -33,6 +33,7 @@ Format: `- [ ] T### [P] [USn] Description (path)`. `[P]` = can run in parallel w
 - [x] T024 [P] [US1] Analog list view (ranked cards with T/G/M numbers)
 - [x] T025 [US1] Analog map view (MapLibre, client-only, score-colored markers, keyboard-focusable)
 - [x] T026 [US1] `analog-finder.screen.tsx` rendered from `src/app/page.tsx`
+- [x] T029 [US1] Target preview card on thumbnail hover or keyboard focus: larger orbital image with scale and source, name, region, mission relevance
 - [x] T028 [US1] Target list thumbnails: orbital image crop per Moon/Mars site from USGS planetary WMS, derived from lat/lon in the data layer
 - [x] T027 [US1] Map layer switcher (Satellite default, Topographic, NASA relief, Geology), score legend, scale and fullscreen controls
 

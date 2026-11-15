@@ -40,6 +40,8 @@ export const en = {
     openDetail: (name: string) => `Open details for ${name}`,
     mapLabel: "Map of Earth analog sites",
     markerLabel: (name: string, score: number) => `${name}, match ${score}`,
+    previewAlt: (name: string, widthKm: number) => `Orbital view of ${name}, about ${widthKm} km across`,
+    previewScale: (widthKm: number) => `≈ ${widthKm} km across`,
   },
   map: {
     layers: "Layers",
