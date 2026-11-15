@@ -11,7 +11,6 @@ import { useTargetsViewModel } from "./view-models/use-targets-view-model";
 import { ActivityPickerView } from "./views/activity-picker.view";
 import { AnalogDetailDrawerView } from "./views/analog-detail-drawer.view";
 import { AnalogListView } from "./views/analog-list.view";
-import { StatRowView } from "./views/stat-row.view";
 import { MapLayerSwitcherView } from "./views/map-layer-switcher.view";
 import { MapLegendView } from "./views/map-legend.view";
 import { TargetHeroView } from "./views/target-hero.view";
@@ -64,13 +63,6 @@ export const AnalogFinderScreen = () => {
         </div>
 
         <main className="flex min-h-0 flex-col gap-4">
-          <StatRowView
-            world={selection.world}
-            targetName={targets.target?.name ?? null}
-            activity={selection.activity}
-            topScore={results.topScore}
-            evaluatedCount={results.evaluatedCount}
-          />
           <section className="relative min-h-[420px] flex-1 overflow-hidden rounded-frame border border-line bg-surface">
             <AnalogMapView
               style={selection.basemap.style}

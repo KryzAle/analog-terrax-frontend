@@ -242,7 +242,7 @@ sequenceDiagram
     API-->>R: ranked matches + ScoreBreakdown
     R-->>Q: AnalogSearchResult (mapped entities)
     Q-->>RVM: data (previous data kept while refreshing)
-    RVM-->>V: topMatches (top 5), knownMatches, topScore
+    RVM-->>V: topMatches (top 5), knownMatches
     V-->>U: Map markers + ranked cards
 ```
 

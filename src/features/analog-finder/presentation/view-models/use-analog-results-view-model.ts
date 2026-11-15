@@ -32,8 +32,6 @@ export const useAnalogResultsViewModel = ({ world, targetId, weights, showKnownA
     topMatches,
     knownMatches,
     allMatches: matches,
-    evaluatedCount: data?.evaluatedCount ?? null,
-    topScore: topMatches[0]?.overallPct ?? null,
     isPending: isPending && Boolean(targetId),
     isRefreshing: isFetching && !isPending,
     isError,
