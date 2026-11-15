@@ -31,7 +31,6 @@
 | Ranked analogs | `analogsSearchEarthAnalogs({ target_body, target_site_id, weights, k })` | Query key includes weights |
 | Laser profile | `analogsGetLaserProfileComparison(earthCellId, targetSiteId)` | Loaded when the drawer opens |
 | Feature labels | `planetaryGetTaxonomy()` | Labels and units for similar/different bullets |
-| Backend status | `systemGetHealth()` | Existing badge |
 
 ## Layer breakdown
 
@@ -60,7 +59,7 @@ The team's `analog-explorer` hooks become the data-layer repositories and view m
   - Mars uses Viking MDIM 2.1 colour.
 
   Replace it with a backend `image_url` once F2 is answered. MapLibre's worker is loaded from unpkg at the installed version, because Turbopack rewrites its self-relative worker URL; self-host it if the map must work offline.
-- **Backend availability:** the backend is a Vercel function; cold starts can exceed 1 s. Warm it before the demo (open the health badge).
+- **Backend availability:** the backend is a Vercel function; cold starts can exceed 1 s. Warm it before the demo (load the dashboard once).
 - **CORS:** the browser calls the API directly. Allowed origins: `http://localhost:3000`, `https://analog-terrax-frontend.vercel.app`. Vercel preview URLs need adding in the backend if previews are used.
 - **API gaps** (confidence, images, sources, activities): see spec "Backend findings" F1–F4. The UI renders placeholders until the backend adds them; no fake values in the frontend.
 - **Generated client:** `src/client/` is regenerated with `make api`; never edit it by hand.

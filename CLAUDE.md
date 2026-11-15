@@ -65,7 +65,7 @@ The FastAPI backend computes all scores. The frontend sends weights to `POST /ap
 | `analogsGetEarthAnalogHeatmap(params)` | `GET /api/v1/analogs/heatmap` | Global score layer |
 | `analogsGetLaserProfileComparison(cell, target)` | `GET /api/v1/analogs/{cell}/profile` | ICESat-2 vs LOLA/MOLA profiles |
 | `planetaryGetTaxonomy()` | `GET /api/v1/taxonomy` | Feature and lithology labels |
-| `systemGetHealth()` | `GET /api/v1/health` | Backend status badge |
+| `systemGetHealth()` | `GET /api/v1/health` | Available in the SDK; not shown in the UI |
 
 - Adding a site or target is a backend data change; it needs **no frontend code change**.
 - Not yet in the API (open questions in spec 001): confidence level, images with scale label, data source links, activities. Until then, activities come from frontend config and missing fields show placeholders.
@@ -106,7 +106,7 @@ Current feature: [specs/001-analog-finder/](specs/001-analog-finder/spec.md).
 
 ## Repo state
 
-Next.js 15 (App Router, React 19, TS strict, Tailwind v4) on Vercel, backed by the FastAPI repo `analog-terrax-backend` (expected as a sibling directory, deployed at `https://analog-terrax-backend.vercel.app`). The dashboard is `src/features/analog-finder/` (MVVM, rendered by `src/app/page.tsx`); `src/features/system-status/` is the backend health badge. Dark tokens are in `src/app/globals.css`, strings in `src/shared/i18n`, config in `src/shared/config`.
+Next.js 15 (App Router, React 19, TS strict, Tailwind v4) on Vercel, backed by the FastAPI repo `analog-terrax-backend` (expected as a sibling directory, deployed at `https://analog-terrax-backend.vercel.app`). The dashboard is `src/features/analog-finder/` (MVVM, rendered by `src/app/page.tsx`); Dark tokens are in `src/app/globals.css`, strings in `src/shared/i18n`, config in `src/shared/config`.
 
 ## Commands
 
