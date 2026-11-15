@@ -106,9 +106,9 @@ From 1280 px the Earth map is **full-bleed**: it fills the whole area under the 
 │    │     once results load        │  T / G / M rings   │ d  │
 │ r  │                              │  + weight sliders  │    │
 │ a  │                              │                    │ r  │
-│ i  ├──────────────────────────────┴────────────────────┤ a  │
-│ l  │  Earth limits note · Data sources · Demo banner   │ i  │
-└────┴───────────────────────────────────────────────────┴────┘
+│ i  │                              │                    │ a  │
+│ l  │                              │                    │ i  │
+└────┴──────────────────────────────┴────────────────────┴────┘
                      Detail drawer slides in over the map →
 ```
 
@@ -133,7 +133,7 @@ From 1280 px the Earth map is **full-bleed**: it fills the whole area under the 
 | `ImageCompare` | Earth image left, target image right, equal height, shared scale bar with label ("100 m"); placeholder = glass card with an icon and "Image not available" |
 | `MapMarker` | Score-colored dot with white 2 px ring and score label on hover/focus; known analogs `--color-known`; selected = lime ring + pulse |
 | `DemoBanner` | Thin warning strip at top of the app: "Demo data — not real results" |
-| `EarthLimitsNote` | Always-visible glass note with an info icon at the bottom of the drawer and the results panel |
+| `EarthLimitsNote` | Always-visible glass note with an info icon at the bottom of the analog detail drawer |
 | `SourceList` | Small muted links with an external-link icon |
 
 ## 6. Effects and motion

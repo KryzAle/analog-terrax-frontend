@@ -108,9 +108,6 @@ export const en = {
     lithology: (target: string, earth: string) => `Dominant rock: ${target} on target vs ${earth} here`,
   },
   status: {
-    connecting: "Connecting to backend…",
-    online: (service: string, version: string) => `${service} v${version}`,
-    offline: "Backend unreachable",
     retry: "Retry",
   },
   errors: {

@@ -3,8 +3,6 @@
 import dynamic from "next/dynamic";
 import { useRef } from "react";
 import { DemoBanner } from "@/shared/ui/demo-banner";
-import { EarthLimitsNote } from "@/shared/ui/earth-limits-note";
-import { ApiStatusBadge } from "@/features/system-status/components/api-status-badge";
 import { useAnalogDetailViewModel } from "./view-models/use-analog-detail-view-model";
 import { useAnalogResultsViewModel } from "./view-models/use-analog-results-view-model";
 import { useSelectionViewModel } from "./view-models/use-selection-view-model";
@@ -87,10 +85,6 @@ export const AnalogFinderScreen = () => {
             </div>
             <TargetHeroView world={selection.world} target={targets.target} />
           </section>
-          <div className="pointer-events-auto grid gap-4 lg:grid-cols-[minmax(0,1fr)_auto]">
-            <EarthLimitsNote />
-            <ApiStatusBadge />
-          </div>
         </main>
 
         <div className="pointer-events-auto flex min-h-0 flex-col gap-4">

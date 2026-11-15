@@ -48,7 +48,7 @@ AnalogTerraX is a one-page mission-control dashboard. You pick a world (Moon or 
 | **Earth map** | MapLibre GL map with score-coloured markers, grey known-analog markers, a score legend, a metric scale bar, fullscreen, and a layer switcher (Satellite, Topographic, NASA relief, Geology). |
 | **Weight sliders** | Three T/G/M sliders. Changes are debounced (300 ms) and re-query the backend; the previous results stay on screen until new ones arrive. |
 | **Analog detail drawer** | Radar chart, ring gauges, "Similar in" and **"Different in"** lists (always visible), test ideas, ICESat-2 vs LOLA/MOLA laser profile, data sources, and the Earth limits note. |
-| **Honesty by design** | Every site is a *"candidate analog to evaluate"*, never "official". An "Earth limits" note is always shown, and a "Demo data" banner appears while the backend serves placeholder data. |
+| **Honesty by design** | Every site is a *"candidate analog to evaluate"*, never "official". An "Earth limits" note is always shown in the detail drawer, and a "Demo data" banner appears while the backend serves placeholder data. |
 | **Resilience** | TanStack Query caches the demo path (`staleTime: Infinity`), and a clear error state with retry replaces blank screens when the backend is unreachable. |
 | **Accessibility** | WCAG 2.1 AA contrast, full keyboard navigation (native `<dialog>`, radio groups, focus return), and scores always shown as numbers, never by colour alone. |
 
@@ -208,7 +208,6 @@ analog-terrax-frontend/
 │   │   │   │   ├── views/          # rail, lists, map, layer switcher, legend, drawer, profile…
 │   │   │   │   └── analog-finder.screen.tsx
 │   │   │   └── di.ts               # Composition root
-│   │   └── system-status/          # Backend health badge (GET /health)
 │   └── shared/
 │       ├── config/                 # app-config, basemaps, data sources
 │       ├── i18n/                   # String catalog (en)
@@ -253,7 +252,6 @@ sequenceDiagram
 | `["sites", world]` | `GET /bodies/{body}/sites` | `staleTime: Infinity` |
 | `["analogs", "search", world, targetId, weights]` | `POST /analogs/search` | `staleTime: Infinity`, `placeholderData: keepPreviousData` |
 | `["analogs", "profile", cellId, targetId]` | `GET /analogs/{cell}/profile` | `staleTime: Infinity`, only fetched while the drawer is open |
-| `["system", "health"]` | `GET /health` | Polled every 30 s (`refetchInterval`) |
 
 ---
 
@@ -268,7 +266,7 @@ The SDK in `src/client/` is generated from the backend's OpenAPI spec (`make api
 | `analogsGetLaserProfileComparison(cell, target)` | `GET /api/v1/analogs/{cell}/profile` | ICESat-2 vs LOLA/MOLA elevation transects |
 | `analogsGetEarthAnalogHeatmap(params)` | `GET /api/v1/analogs/heatmap` | Global score layer (not used yet) |
 | `planetaryGetTaxonomy()` | `GET /api/v1/taxonomy` | Feature and lithology labels (not used yet) |
-| `systemGetHealth()` | `GET /api/v1/health` | Backend status badge |
+| `systemGetHealth()` | `GET /api/v1/health` | Backend health (in the SDK; not shown in the UI) |
 
 Search request filters sent by the frontend: `curated_only: true`, `exclude_vegetated: true`, `max_ndvi: 0.3`.
 
