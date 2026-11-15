@@ -2,7 +2,7 @@
 
 import "maplibre-gl/dist/maplibre-gl.css";
 import * as maplibregl from "maplibre-gl";
-import { type ReactNode, useEffect, useRef } from "react";
+import { type RefObject, useEffect, useRef } from "react";
 import type { Basemap } from "@/shared/config/basemaps";
 import { t } from "@/shared/i18n";
 import { scoreTone, toneColor } from "@/shared/lib/score-tone";
@@ -17,8 +17,27 @@ type AnalogMapViewProps = {
   knownMatches: readonly AnalogMatch[];
   selectedId: string | null;
   onSelect: (siteId: string) => void;
-  children?: ReactNode;
+  safeAreaRef: RefObject<HTMLElement | null>;
 };
+
+type Insets = Readonly<{ top: number; right: number; bottom: number; left: number }>;
+
+const NO_INSETS: Insets = { top: 0, right: 0, bottom: 0, left: 0 };
+const FIT_MARGIN = 72;
+const MAX_CENTER_LAT = 80;
+
+// The default constrain keeps the world as tall as the canvas, which stops worldwide matches fitting the centre window
+const latitudeOnlyConstrain: maplibregl.TransformConstrainFunction = (lngLat, zoom) => ({
+  center: new maplibregl.LngLat(lngLat.lng, Math.max(-MAX_CENTER_LAT, Math.min(MAX_CENTER_LAT, lngLat.lat))),
+  zoom,
+});
+
+const safeInsets = (frame: DOMRect, safe: DOMRect): Insets => ({
+  top: Math.max(0, safe.top - frame.top),
+  right: Math.max(0, frame.right - safe.right),
+  bottom: Math.max(0, frame.bottom - safe.bottom),
+  left: Math.max(0, safe.left - frame.left),
+});
 
 const markerElement = (match: AnalogMatch, isKnown: boolean, isSelected: boolean, onSelect: (id: string) => void) => {
   const score = Math.round(match.overallPct);
@@ -39,11 +58,27 @@ const markerElement = (match: AnalogMatch, isKnown: boolean, isSelected: boolean
   return anchor;
 };
 
-export const AnalogMapView = ({ style, topMatches, knownMatches, selectedId, onSelect, children }: AnalogMapViewProps) => {
+export const AnalogMapView = ({ style, topMatches, knownMatches, selectedId, onSelect, safeAreaRef }: AnalogMapViewProps) => {
   const frameRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
   const appliedStyleRef = useRef(style);
+  const insetsRef = useRef<Insets>(NO_INSETS);
+
+  useEffect(() => {
+    const frame = frameRef.current;
+    const safeArea = safeAreaRef.current;
+    if (!frame || !safeArea) return;
+    const update = () => {
+      insetsRef.current = safeInsets(frame.getBoundingClientRect(), safeArea.getBoundingClientRect());
+      Object.entries(insetsRef.current).forEach(([side, px]) => frame.style.setProperty(`--map-safe-${side}`, `${px}px`));
+    };
+    update();
+    const observer = new ResizeObserver(update);
+    observer.observe(frame);
+    observer.observe(safeArea);
+    return () => observer.disconnect();
+  }, [safeAreaRef]);
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -53,13 +88,14 @@ export const AnalogMapView = ({ style, topMatches, knownMatches, selectedId, onS
       center: [0, 15],
       zoom: 1,
       attributionControl: { compact: true },
+      transformConstrain: latitudeOnlyConstrain,
     });
     map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right");
-    map.addControl(new maplibregl.FullscreenControl({ container: frameRef.current ?? undefined }), "top-right");
+    map.addControl(new maplibregl.FullscreenControl({ container: safeAreaRef.current ?? undefined }), "top-right");
     map.addControl(new maplibregl.ScaleControl({ unit: "metric" }), "bottom-right");
     mapRef.current = map;
     return () => map.remove();
-  }, []);
+  }, [safeAreaRef]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -89,15 +125,22 @@ export const AnalogMapView = ({ style, topMatches, knownMatches, selectedId, onS
       (box, match) => box.extend([match.site.lon, match.site.lat]),
       new maplibregl.LngLatBounds(),
     );
-    map.fitBounds(bounds, { padding: 80, maxZoom: 4, duration: 600 });
+    const insets = insetsRef.current;
+    map.fitBounds(bounds, {
+      padding: {
+        top: insets.top + FIT_MARGIN,
+        right: insets.right + FIT_MARGIN,
+        bottom: insets.bottom + FIT_MARGIN,
+        left: insets.left + FIT_MARGIN,
+      },
+      maxZoom: 4,
+      duration: 600,
+    });
   }, [topMatches]);
 
   return (
-    <div ref={frameRef} className="absolute inset-0 bg-space">
+    <div ref={frameRef} className="pointer-events-auto absolute inset-0 -z-10 bg-space">
       <div ref={containerRef} role="region" aria-label={t.finder.mapLabel} className="size-full" />
-      <div className="pointer-events-none absolute inset-x-3 top-3 z-20 flex flex-wrap items-start gap-2 pr-12 *:pointer-events-auto">
-        {children}
-      </div>
     </div>
   );
 };

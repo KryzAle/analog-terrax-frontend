@@ -5,7 +5,7 @@ type GlassCardProps = ComponentPropsWithoutRef<"section">;
 
 export const GlassCard = ({ className, ...props }: GlassCardProps) => (
   <section
-    className={cn("rounded-card border border-line bg-surface p-5 backdrop-blur-xl", className)}
+    className={cn("rounded-card border border-line bg-glass p-5 backdrop-blur-xl", className)}
     {...props}
   />
 );

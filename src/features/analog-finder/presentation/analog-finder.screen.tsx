@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import { useRef } from "react";
 import { DemoBanner } from "@/shared/ui/demo-banner";
 import { EarthLimitsNote } from "@/shared/ui/earth-limits-note";
 import { ApiStatusBadge } from "@/features/system-status/components/api-status-badge";
@@ -33,11 +34,12 @@ export const AnalogFinderScreen = () => {
   });
   const selectedMatch = results.allMatches.find((match) => match.site.id === selection.selectedSiteId) ?? null;
   const detail = useAnalogDetailViewModel({ target: targets.target, match: selectedMatch, activity: selection.activity });
+  const mapAreaRef = useRef<HTMLElement>(null);
 
   return (
     <div className="flex min-h-screen flex-col xl:h-screen">
       <DemoBanner />
-      <div className="grid flex-1 gap-4 p-4 xl:min-h-0 xl:grid-cols-[84px_320px_minmax(0,1fr)_360px] xl:grid-rows-[minmax(0,1fr)]">
+      <div className="relative isolate grid flex-1 gap-4 p-4 xl:pointer-events-none xl:min-h-0 xl:grid-cols-[84px_320px_minmax(0,1fr)_360px] xl:grid-rows-[minmax(0,1fr)]">
         <WorldRailView
           world={selection.world}
           showKnownAnalogs={selection.showKnownAnalogs}
@@ -45,7 +47,7 @@ export const AnalogFinderScreen = () => {
           onToggleKnownAnalogs={selection.toggleKnownAnalogs}
         />
 
-        <div className="flex min-h-0 flex-col gap-4">
+        <div className="pointer-events-auto flex min-h-0 flex-col gap-4">
           <TargetListView
             world={selection.world}
             targets={targets.targets}
@@ -63,30 +65,35 @@ export const AnalogFinderScreen = () => {
         </div>
 
         <main className="flex min-h-0 flex-col gap-4">
-          <section className="relative min-h-[420px] flex-1 overflow-hidden rounded-frame border border-line bg-surface">
+          <section
+            ref={mapAreaRef}
+            className="relative isolate flex min-h-[420px] flex-1 flex-col justify-between gap-3 overflow-hidden rounded-frame border border-line bg-surface p-3 xl:static xl:isolation-auto xl:overflow-visible xl:rounded-none xl:border-0 xl:bg-transparent xl:p-0"
+          >
             <AnalogMapView
               style={selection.basemap.style}
               topMatches={results.topMatches}
               knownMatches={results.knownMatches}
               selectedId={selection.selectedSiteId}
               onSelect={selection.openSite}
-            >
+              safeAreaRef={mapAreaRef}
+            />
+            <div className="pointer-events-none relative z-10 flex flex-wrap items-start gap-2 pr-12 *:pointer-events-auto">
               <MapLayerSwitcherView
                 basemaps={selection.basemaps}
                 selectedId={selection.basemap.id}
                 onSelect={selection.selectBasemap}
               />
               <MapLegendView />
-            </AnalogMapView>
+            </div>
             <TargetHeroView world={selection.world} target={targets.target} />
           </section>
-          <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_auto]">
+          <div className="pointer-events-auto grid gap-4 lg:grid-cols-[minmax(0,1fr)_auto]">
             <EarthLimitsNote />
             <ApiStatusBadge />
           </div>
         </main>
 
-        <div className="flex min-h-0 flex-col gap-4">
+        <div className="pointer-events-auto flex min-h-0 flex-col gap-4">
           <AnalogListView
             matches={results.topMatches}
             selectedId={selection.selectedSiteId}

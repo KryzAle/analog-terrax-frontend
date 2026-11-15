@@ -7,6 +7,7 @@
   --color-surface: rgb(255 255 255 / 0.05);
   --color-surface-raised: rgb(255 255 255 / 0.08);
   --color-surface-solid: #12151d;
+  --color-glass: rgb(12 15 22 / 0.78);
   --color-line: rgb(255 255 255 / 0.08);
   --color-text: #f5f7fa;
   --color-text-muted: #9aa3b2;
@@ -86,8 +87,14 @@ body {
   filter: invert(1);
 }
 
+.maplibregl-map .maplibregl-ctrl-top-right {
+  top: var(--map-safe-top, 0px);
+  right: var(--map-safe-right, 0px);
+}
+
 .maplibregl-map .maplibregl-ctrl-bottom-right {
-  z-index: 20;
+  right: var(--map-safe-right, 0px);
+  bottom: var(--map-safe-bottom, 0px);
 }
 
 .maplibregl-ctrl-scale {

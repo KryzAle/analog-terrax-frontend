@@ -11,7 +11,7 @@ type WorldRailViewProps = {
 };
 
 export const WorldRailView = ({ world, showKnownAnalogs, onSelectWorld, onToggleKnownAnalogs }: WorldRailViewProps) => (
-  <nav className="flex items-center gap-2 rounded-card border border-line bg-surface p-2 backdrop-blur-xl xl:flex-col xl:py-4">
+  <nav className="pointer-events-auto flex items-center gap-2 rounded-card border border-line bg-glass p-2 backdrop-blur-xl xl:flex-col xl:py-4">
     <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-lime text-space" aria-hidden>
       <Orbit className="size-6" strokeWidth={1.75} />
     </span>

@@ -18,7 +18,8 @@ Defined once as CSS variables in `src/app/globals.css` (Tailwind v4 `@theme`) an
 | Token | Value | Use |
 |---|---|---|
 | `--color-space` | `#05070D` | App background |
-| `--color-surface` | `rgba(255,255,255,0.05)` | Glass cards (with `backdrop-blur-xl`) |
+| `--color-surface` | `rgba(255,255,255,0.05)` | Inner fills, hover states, the framed map below 1280 px |
+| `--color-glass` | `rgba(12,15,22,0.78)` | Floating panels over the full-bleed map (with `backdrop-blur-xl`); dark enough for AA text over bright imagery |
 | `--color-surface-raised` | `rgba(255,255,255,0.08)` | Hover, drawers, popovers |
 | `--color-surface-solid` | `#12151D` | Fallback when blur is unavailable; contrast reference |
 | `--color-line` | `rgba(255,255,255,0.08)` | 1 px card borders, dividers, chart grid |
@@ -94,6 +95,8 @@ Map markers, rings and bars use a continuous scale `danger (0) → warning (50) 
 
 Desktop first (1280–1920 px, projector), responsive down to tablet (768 px).
 
+From 1280 px the Earth map is **full-bleed**: it fills the whole area under the demo banner, and every panel floats over it as glass. The open centre column is the map's visible window: the layers button, legend, target chip, zoom, scale and attribution sit at its corners, and results are framed inside it. Clicks in the gaps between panels reach the map. Below 1280 px the panels stack and the map is a framed card.
+
 ```
 ┌────┬──────────────────────────────┬────────────────────┬────┐
 │ I  │                              │                    │ W  │
@@ -120,7 +123,7 @@ Desktop first (1280–1920 px, projector), responsive down to tablet (768 px).
 
 | Component | Spec |
 |---|---|
-| `GlassCard` | `--color-surface`, 1 px `--color-line`, `backdrop-blur-xl`, radius 20, optional tint |
+| `GlassCard` | `--color-glass`, 1 px `--color-line`, `backdrop-blur-xl`, radius 20, optional tint |
 | `RingGauge` | Circular progress (stroke 6 px, track `--color-line`), value colored by score scale, number and label (T/G/M) **inside** the ring |
 | `ScorePill` | Lime or world-colored capsule label on the left + big number on the right, like "Curiosity 137.4°". Used for the overall score in cards and the drawer header |
 | `IconRail` / `RailItem` | 44 px hit area, muted icon; active = glow pill (`--color-lime` 15 % background, lime icon, label) |
