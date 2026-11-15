@@ -2,6 +2,17 @@ import type { Activity } from "../domain/entities";
 
 export const activities: readonly Activity[] = [
   {
+    id: "not-customized",
+    name: "Not customized (General)",
+    icon: "not-customized",
+    weights: { topography: 0.45, geology: 0.35, mineralogy: 0.2 },
+    testIdeas: [
+      "Broad multi-criteria surface evaluation",
+      "Benchmark overall environmental similarity",
+      "Baseline cross-planetary analog comparison",
+    ],
+  },
+  {
     id: "rover",
     name: "Rover mobility and navigation",
     icon: "rover",

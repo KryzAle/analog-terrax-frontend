@@ -1,6 +1,19 @@
-import { Car, CircleDot, Drill, type LucideIcon, PersonStanding, PlaneLanding, ScanLine, Shovel } from "lucide-react";
+import {
+  Car,
+  CircleDot,
+  Compass,
+  Drill,
+  type LucideIcon,
+  PersonStanding,
+  PlaneLanding,
+  ScanLine,
+  Shovel,
+  SlidersHorizontal,
+} from "lucide-react";
 
 const icons: Readonly<Record<string, LucideIcon>> = {
+  "not-customized": SlidersHorizontal,
+  general: Compass,
   rover: Car,
   drilling: Drill,
   construction: Shovel,
