@@ -25,7 +25,7 @@ Shared code that is not owned by a feature:
 
 ```
 src/shared/
-├── ui/        # Design-system components (GlassCard, StatTile, RingGauge, ...)
+├── ui/        # Design-system components (GlassCard, ScorePill, RingGauge, ...)
 ├── i18n/      # String catalog (en.ts) and the t() helper
 ├── lib/       # cn() and other generic helpers
 └── config/    # App config (demo-data flag, top-N default)
@@ -121,7 +121,7 @@ A thin container (e.g. `analog-finder.screen.tsx`) calls the view models and pas
 
 - **Components:** arrow functions only, named exports, props typed with a `XxxProps` type.
   ```tsx
-  export const StatTile = ({ label, value, icon: Icon }: StatTileProps) => ( ... );
+  export const ScorePill = ({ label, value }: ScorePillProps) => ( ... );
   ```
 - **Functional style:** `map` / `filter` / `reduce` / `toSorted` instead of loops; no mutation of arrays or objects; derive data instead of syncing it with effects.
 - **TypeScript:** strict, no `any`, no non-null assertions on API data (handle `null` in mappers). Prefer `type` over `interface` except for repository contracts.

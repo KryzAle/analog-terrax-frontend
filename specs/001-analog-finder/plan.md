@@ -46,9 +46,9 @@
 | DI | `di.ts` | Exports repository instances |
 | View models | `presentation/view-models/use-selection-view-model.ts` | World, target, activity, weights; reset weights on activity change |
 | View models | `use-targets-view-model.ts`, `use-analog-results-view-model.ts`, `use-analog-detail-view-model.ts` | Queries, derived display data, actions |
-| Views | `presentation/views/*.view.tsx` | Selection panel, world rail, stat row, hero, analog list, map, weights panel, detail drawer |
+| Views | `presentation/views/*.view.tsx` | Selection panel, world rail, hero, analog list, map, weights panel, detail drawer |
 | Screen | `presentation/analog-finder.screen.tsx` | Connects view models to views |
-| Shared UI | `src/shared/ui/*.tsx` | GlassCard, StatTile, RingGauge, ScorePill, ConfidenceBadge, IconRail, RadarChart, ImageCompare, DemoBanner, EarthLimitsNote, SourceList |
+| Shared UI | `src/shared/ui/*.tsx` | GlassCard, RingGauge, ScorePill, ConfidenceBadge, IconRail, RadarChart, ImageCompare, DemoBanner, EarthLimitsNote, SourceList |
 
 The team's `analog-explorer` hooks become the data-layer repositories and view models; its laser profile chart moves to `views/` unchanged at first. `src/features/analog-explorer/` is deleted once the new screen covers everything it does.
 

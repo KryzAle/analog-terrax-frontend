@@ -57,10 +57,6 @@ export const en = {
   },
   stats: {
     target: "Target",
-    activity: "Activity",
-    topScore: "Top match",
-    evaluated: "Sites evaluated",
-    none: "—",
   },
   weights: {
     title: "Aspect weights",

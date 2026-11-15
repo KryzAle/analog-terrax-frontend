@@ -53,8 +53,6 @@ Defined once as CSS variables in `src/app/globals.css` (Tailwind v4 `@theme`) an
 
 ### Tinted tiles
 
-Like the reference's purple, orange and navy tiles, stat tiles may carry a 12–18 % tint of a meaningful color over `--color-surface`: world color for the target tile, navy for activity, a score color for top score. The tint never replaces the number.
-
 ### Score scale
 
 Map markers, rings and bars use a continuous scale `danger (0) → warning (50) → success (100)`. The number is always shown next to the color.
@@ -85,7 +83,7 @@ Map markers, rings and bars use a continuous scale `danger (0) → warning (50) 
 | Role | Size / weight | Example |
 |---|---|---|
 | Hero | 88–112 px / 800, tracking -0.04em, line-height 0.9 | Target name ("Mars", "Shackleton") |
-| Display number | 32–40 px / 600 | Overall score, stat values |
+| Display number | 32–40 px / 600 | Overall score |
 | Title | 18–20 px / 600 | Card and drawer titles |
 | Body | 14–15 px / 400 | Bullets, descriptions |
 | Label | 12–13 px / 500, muted | Tile labels, axis labels, captions |
@@ -97,9 +95,8 @@ Map markers, rings and bars use a continuous scale `danger (0) → warning (50) 
 Desktop first (1280–1920 px, projector), responsive down to tablet (768 px).
 
 ```
-┌────┬───────────────────────────────────────────────────┬────┐
-│    │  [Target] [Activity] [Top score] [Sites found]    │    │
-│ I  ├──────────────────────────────┬────────────────────┤ W  │
+┌────┬──────────────────────────────┬────────────────────┬────┐
+│ I  │                              │                    │ W  │
 │ c  │                              │  Ranked analog     │ o  │
 │ o  │   Hero: world image + name   │  cards (top 5)     │ r  │
 │ n  │   → Earth map with markers   │                    │ l  │
@@ -113,7 +110,6 @@ Desktop first (1280–1920 px, projector), responsive down to tablet (768 px).
 ```
 
 - **Left icon rail** (72 px): world toggle (Moon/Mars), views (Results, Known analogs, Andes case study), settings. The active item is a filled glow pill with a label, like "Planets" in the reference.
-- **Top stat row:** 4 glass `StatTile`s.
 - **Center:** before a selection, the hero (world image with glow + big name). After a selection, the Earth map takes the hero area; the target name stays as a compact glass chip in the bottom-left corner. It has a world-coloured left border and an 11px eyebrow above an 18px bold name on one line, truncated with the full name in a tooltip. Its width is at most 28rem or half the map, so it never covers markers or the attribution.
 - **Right world rail** (64 px): target locations of the current world as round icon buttons with a tooltip, the selected one glowing in the world color. The left panel also has a full accessible list (the rail is a shortcut, not the only path).
 - **Detail drawer:** 480–560 px from the right edge, over the map; `Esc` closes it and focus returns to the opening card.
@@ -125,7 +121,6 @@ Desktop first (1280–1920 px, projector), responsive down to tablet (768 px).
 | Component | Spec |
 |---|---|
 | `GlassCard` | `--color-surface`, 1 px `--color-line`, `backdrop-blur-xl`, radius 20, optional tint |
-| `StatTile` | Icon chip (32 px rounded square, 10 % tint) + muted label on top row; display number below |
 | `RingGauge` | Circular progress (stroke 6 px, track `--color-line`), value colored by score scale, number and label (T/G/M) **inside** the ring |
 | `ScorePill` | Lime or world-colored capsule label on the left + big number on the right, like "Curiosity 137.4°". Used for the overall score in cards and the drawer header |
 | `IconRail` / `RailItem` | 44 px hit area, muted icon; active = glow pill (`--color-lime` 15 % background, lime icon, label) |
