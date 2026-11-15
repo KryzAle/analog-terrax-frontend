@@ -15,7 +15,7 @@ export const ApiStatusBadge = () => {
       : t.status.online(data.service, data.version);
 
   return (
-    <div role="status" className="flex items-center gap-3 rounded-tile border border-line bg-surface px-3.5 py-2.5 text-xs">
+    <div role="status" className="flex items-center gap-3 rounded-tile border border-line bg-glass px-3.5 py-2.5 text-xs backdrop-blur-xl">
       <span className={cn("size-2 rounded-full", tone, isFetching && "animate-pulse")} aria-hidden />
       <span className="text-text-muted">{label}</span>
       <button

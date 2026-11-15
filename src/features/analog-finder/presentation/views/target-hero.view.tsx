@@ -11,7 +11,7 @@ export const TargetHeroView = ({ world, target }: TargetHeroViewProps) => {
   const name = target?.name ?? t.app.name;
   return (
     <div
-      className="absolute bottom-3 left-3 z-10 max-w-[min(28rem,calc(50%-1rem))] rounded-tile border border-line border-l-4 bg-surface-solid/85 px-3 py-2 backdrop-blur-xl"
+      className="pointer-events-auto relative z-10 max-w-[min(28rem,50%)] self-start rounded-tile border border-line border-l-4 bg-glass px-3 py-2 backdrop-blur-xl"
       style={{ borderLeftColor: worldColor[world].css }}
     >
       <p className="truncate text-[11px] font-semibold tracking-widest uppercase" style={{ color: worldColor[world].css }}>
