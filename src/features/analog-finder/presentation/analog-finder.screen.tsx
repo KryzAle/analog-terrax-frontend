@@ -90,6 +90,7 @@ export const AnalogFinderScreen = () => {
         <div className="pointer-events-auto flex min-h-0 flex-col gap-4">
           <AnalogListView
             matches={results.topMatches}
+            rankDeltas={results.rankDeltas}
             selectedId={selection.selectedSiteId}
             isPending={results.isPending}
             isRefreshing={results.isRefreshing}

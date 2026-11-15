@@ -74,6 +74,21 @@ body {
   }
 }
 
+@property --score {
+  syntax: "<integer>";
+  inherits: false;
+  initial-value: 0;
+}
+
+.score-count {
+  counter-reset: score var(--score);
+  transition: --score 500ms ease-out;
+}
+
+.score-count::after {
+  content: counter(score) "%";
+}
+
 .maplibregl-ctrl-group {
   background: var(--color-surface-solid) !important;
   border: 1px solid var(--color-line);

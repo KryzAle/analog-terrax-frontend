@@ -140,7 +140,7 @@ From 1280 px the Earth map is **full-bleed**: it fills the whole area under the 
 
 - **Glow:** world-colored radial gradient behind the hero (`blur(80px)`, 35 % opacity); selected elements use `box-shadow: 0 0 24px` in their accent at 30 %.
 - **Background:** `--color-space` with a sparse starfield (static CSS radial dots) and an optional faint 32 px grid at 3 % opacity, as in the reference.
-- **Motion:** 150–250 ms `ease-out` for hover, select and drawer; result re-ranking animates position (≤ 200 ms). Everything is disabled under `prefers-reduced-motion`.
+- **Motion:** 150–250 ms `ease-out` for hover, select and drawer; result re-ranking glides cards to their new rank (400 ms FLIP via the Web Animations API, `useFlipReorder`), while scores count and aspect bars scale to their new values (500 ms, `transform` only) and a chevron shows how many places a site moved. Everything is disabled under `prefers-reduced-motion`.
 
 ## 7. Iconography
 
