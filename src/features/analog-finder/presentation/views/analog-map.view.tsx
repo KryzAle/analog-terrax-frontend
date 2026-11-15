@@ -24,6 +24,7 @@ type Insets = Readonly<{ top: number; right: number; bottom: number; left: numbe
 
 const NO_INSETS: Insets = { top: 0, right: 0, bottom: 0, left: 0 };
 const FIT_MARGIN = 72;
+const SITE_ZOOM = 7;
 const MAX_CENTER_LAT = 80;
 
 // The default constrain keeps the world as tall as the canvas, which stops worldwide matches fitting the centre window
@@ -64,6 +65,10 @@ export const AnalogMapView = ({ style, topMatches, knownMatches, selectedId, onS
   const mapRef = useRef<maplibregl.Map | null>(null);
   const appliedStyleRef = useRef(style);
   const insetsRef = useRef<Insets>(NO_INSETS);
+  const isFocusedRef = useRef(false);
+  const focus = [...topMatches, ...knownMatches].find((match) => match.site.id === selectedId)?.site;
+  const focusLon = focus?.lon;
+  const focusLat = focus?.lat;
 
   useEffect(() => {
     const frame = frameRef.current;
@@ -120,7 +125,20 @@ export const AnalogMapView = ({ style, topMatches, knownMatches, selectedId, onS
 
   useEffect(() => {
     const map = mapRef.current;
-    if (!map || topMatches.length === 0) return;
+    isFocusedRef.current = focusLon !== undefined && focusLat !== undefined;
+    if (!map || focusLon === undefined || focusLat === undefined) return;
+    const insets = insetsRef.current;
+    map.flyTo({
+      center: [focusLon, focusLat],
+      zoom: Math.max(map.getZoom(), SITE_ZOOM),
+      offset: [(insets.left - insets.right) / 2, (insets.top - insets.bottom) / 2],
+      duration: 1200,
+    });
+  }, [focusLon, focusLat]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || topMatches.length === 0 || isFocusedRef.current) return;
     const bounds = topMatches.reduce(
       (box, match) => box.extend([match.site.lon, match.site.lat]),
       new maplibregl.LngLatBounds(),
